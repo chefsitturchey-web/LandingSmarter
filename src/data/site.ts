@@ -19,7 +19,7 @@ export const academia = {
   whatsapp: '51999888777',
   telefono: '+51 999 888 777',
   correo: 'info@smarter.edu.pe',
-  ciudad: 'Lima, Perú',
+  ciudad: 'Puno, Perú',
   url: 'https://smarter-academy.chefsitturchey.workers.dev',
 };
 
@@ -119,7 +119,7 @@ export const monedas = [
   { nombre: 'Triángulo', valor: 20, img: 'avatar_triangulo' },
   { nombre: 'Cuadrado', valor: 40, img: 'avatar_cuadrado' },
   { nombre: 'Jefe', valor: 80, img: 'avatar_jefe' },
-  { nombre: 'Otorongo', valor: 160, img: 'avatar_otorongo' },
+  { nombre: 'VIPs', valor: 160, img: 'avatar_otorongo' },
 ] as const;
 
 /** Lo que hace cada quien en la app. */
