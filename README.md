@@ -4,7 +4,7 @@ Página pública de la academia: quiénes son, los programas, qué hace la app,
 cómo descargarla (Android) y un formulario de inscripción que abre WhatsApp.
 
 Hecha con [Astro](https://astro.build): compila a HTML estático, sin servidor.
-La publica Cloudflare Pages.
+La publica Cloudflare.
 
 ## Trabajar en local
 
@@ -41,39 +41,25 @@ Tienda SMARTER y copia monedas, stickers y medallas a `src/assets/img/`.
 Astro las pasa a WebP al compilar. Las capturas `app-perfil.png` y
 `app-tienda.png` se sacan de la app.
 
-## Publicar en Cloudflare Pages
+## Publicar en Cloudflare
 
-Una sola vez:
+La web está publicada como Worker de Cloudflare (proyecto `smarter-academy`)
+en https://smarter-academy.chefsitturchey.workers.dev, conectado a este
+repositorio de GitHub.
 
-1. Sube esta carpeta a un repositorio de GitHub (por ejemplo `landing-smarter`).
-2. En Cloudflare: **Workers & Pages → Create → Pages → Connect to Git** y
-   elige el repositorio.
-3. Configuración de compilación:
-   - Framework preset: **Astro**
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Variable de entorno `NODE_VERSION` = `22`
-4. **Save and Deploy**. La web queda en `https://<nombre>.pages.dev`. Si el
-   nombre no es `landing-smarter`, cámbialo en `astro.config.mjs` y en
-   `academia.url`.
-
-Después, cada `git push` a `main` publica solo.
-
-Sin GitHub también se puede, subiendo lo compilado:
-
-```sh
-npm run build
-npx wrangler pages deploy dist --project-name landing-smarter
-```
+Cada `git push` a `main` la vuelve a publicar sola: Cloudflare corre
+`npm run build` y luego `npx wrangler deploy`, que sube lo que quedó en `dist/`
+según `wrangler.jsonc`. El `name` de ese archivo tiene que ser el mismo que el
+nombre del proyecto en Cloudflare.
 
 ### Dominio propio (más adelante)
 
-En el proyecto de Pages: **Custom domains → Set up a custom domain**. Luego
-cambia `site` en `astro.config.mjs` y `academia.url`.
+En el proyecto: **Domains → Add Domain**. Luego cambia `site` en
+`astro.config.mjs` y `academia.url` en `src/data/site.ts`.
 
 ## Publicar una versión nueva de la app
 
-El APK (unos 27 MB) no va en esta web: Cloudflare Pages no sirve archivos de
+El APK (unos 27 MB) no va en esta web: Cloudflare no sirve archivos de
 más de 25 MB. Va en las Releases de GitHub del repositorio de la app:
 
 1. En la app: `flutter build apk --release`.
