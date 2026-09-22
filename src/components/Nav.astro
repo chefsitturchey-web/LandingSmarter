@@ -1,0 +1,128 @@
+---
+import { Image } from 'astro:assets';
+import { img } from '../lib/img';
+
+const enlaces = [
+  { href: '/#programas', texto: 'Programas' },
+  { href: '/#la-app', texto: 'La app' },
+  { href: '/#juegos', texto: 'Juegos' },
+  { href: '/#descarga', texto: 'Descargar' },
+  { href: '/#preguntas', texto: 'Preguntas' },
+];
+---
+
+<header class="nav">
+  <div class="contenedor nav-fila">
+    <a href="/" class="nav-logo" aria-label="Academia SMARTER, inicio">
+      <Image src={img('logo')} alt="" width={280} loading="eager" />
+    </a>
+
+    <nav class="nav-enlaces" aria-label="Secciones">
+      {enlaces.map((e) => <a href={e.href}>{e.texto}</a>)}
+    </nav>
+
+    <a href="/#inscripcion" class="boton boton-rosa nav-cta">Inscríbete</a>
+
+    <details class="nav-menu">
+      <summary aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </summary>
+      <nav aria-label="Secciones">
+        {enlaces.map((e) => <a href={e.href}>{e.texto}</a>)}
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  // Al tocar un enlace del menu del celular, el menu se cierra solo.
+  for (const a of document.querySelectorAll('.nav-menu a')) {
+    a.addEventListener('click', () => a.closest('details')?.removeAttribute('open'));
+  }
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--borde);
+    transition: box-shadow .3s ease, border-color .3s ease;
+  }
+
+  .nav.despegada {
+    border-color: transparent;
+    box-shadow: 0 8px 28px rgba(26, 23, 48, 0.08);
+  }
+
+  .nav-fila {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    min-height: 72px;
+  }
+
+  .nav-logo img { width: 128px; }
+
+  .nav-enlaces {
+    display: flex;
+    gap: 28px;
+    margin-left: auto;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .nav-enlaces a { text-decoration: none; color: var(--texto-suave); }
+  .nav-enlaces a:hover { color: var(--rosa); }
+
+  .nav-cta { min-height: 44px; padding: 8px 20px; font-size: 0.95rem; }
+
+  .nav-menu { display: none; position: relative; }
+
+  .nav-menu summary {
+    display: grid;
+    gap: 5px;
+    padding: 12px 10px;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .nav-menu summary::-webkit-details-marker { display: none; }
+
+  .nav-menu summary span {
+    width: 22px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--tinta);
+  }
+
+  .nav-menu nav {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    display: grid;
+    min-width: 200px;
+    padding: 8px;
+    border-radius: 16px;
+    background: var(--fondo);
+    box-shadow: 0 16px 40px rgba(26, 23, 48, 0.16);
+  }
+
+  .nav-menu nav a {
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .nav-menu nav a:hover { background: var(--fondo-2); }
+
+  @media (max-width: 860px) {
+    .nav-enlaces { display: none; }
+    .nav-cta { margin-left: auto; }
+    .nav-menu { display: block; }
+    .nav-fila { gap: 8px; }
+  }
+</style>

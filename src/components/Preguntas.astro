@@ -1,0 +1,87 @@
+---
+import { preguntas } from '../data/site';
+---
+
+<section class="seccion preguntas" id="preguntas">
+  <div class="contenedor grid">
+    <div class="cabecera" data-aparece>
+      <span class="etiqueta">Preguntas frecuentes</span>
+      <h2>Lo que más nos preguntan</h2>
+      <p>¿Tienes otra duda? Escríbenos por WhatsApp y te respondemos.</p>
+    </div>
+
+    <div class="lista">
+      {
+        preguntas.map((q, i) => (
+          <details data-aparece style={`--i: ${i}`}>
+            <summary>{q.p}</summary>
+            <p>{q.r}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .preguntas { background: var(--fondo-2); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(24px, 5vw, 64px);
+    align-items: start;
+  }
+
+  .lista { display: grid; gap: 12px; }
+
+  details {
+    border-radius: 16px;
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  summary::after {
+    content: '+';
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--fondo-2);
+    color: var(--rosa);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform .2s ease;
+  }
+
+  details[open] summary::after { transform: rotate(45deg); }
+
+  details p { padding: 0 22px 20px; color: var(--texto-suave); }
+
+  details[open] p { animation: abrir .35s ease; }
+
+  @keyframes abrir {
+    from { opacity: 0; translate: 0 -6px; }
+  }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+    .cabecera { margin-bottom: 0; }
+  }
+</style>

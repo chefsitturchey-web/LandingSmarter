@@ -1,0 +1,180 @@
+---
+import QRCode from 'qrcode';
+import { Image } from 'astro:assets';
+import { img } from '../lib/img';
+import { academia, app, descarga } from '../data/site';
+
+// El codigo se dibuja al compilar: la web no carga ninguna libreria para esto.
+const qr = await QRCode.toString(app.apk, {
+  type: 'svg',
+  margin: 0,
+  errorCorrectionLevel: 'M',
+  color: { dark: '#1A1730', light: '#0000' },
+});
+
+const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponent(
+  'Hola, quiero la cuenta de la app SMARTER para mi hijo/a.',
+)}`;
+---
+
+<section class="seccion descarga" id="descarga">
+  <div class="contenedor">
+    <div class="panel" data-aparece>
+      <div class="panel-texto">
+        <span class="etiqueta">Para alumnos y apoderados</span>
+        <h2>Descarga la app</h2>
+        <p>
+          Horario, asistencia, notas, pagos y el Banco SMARTER, en el celular.
+          Por ahora está para Android.
+        </p>
+
+        <div class="acciones">
+          <a class="boton boton-rosa" href={app.apk} rel="nofollow">
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+              <path d="M17.6 9.48l1.84-3.18a.38.38 0 00-.66-.38l-1.86 3.22a11.5 11.5 0 00-9.84 0L5.22 5.92a.38.38 0 00-.66.38L6.4 9.48A10.8 10.8 0 001 18h22a10.8 10.8 0 00-5.4-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z" />
+            </svg>
+            Descargar para Android
+          </a>
+          <span class="requisito">Versión {app.version} · {app.requisito}</span>
+        </div>
+
+        <p class="aviso-iphone" hidden>
+          Estás en un iPhone: la app todavía no está para iOS. Muy pronto.
+        </p>
+      </div>
+
+      <div class="qr" data-aparece="zoom" style="--i: 2">
+        <div class="qr-codigo" set:html={qr} role="img" aria-label="Código QR para descargar la app" />
+        <p>¿Estás en la computadora? Escanéalo con la cámara de tu Android.</p>
+      </div>
+
+      <Image class="panel-mascota" src={img('mascota-leyendo')} alt="" width={260} />
+    </div>
+
+    <ol class="instalar">
+      {
+        descarga.pasos.map((p, i) => (
+          <li data-aparece style={`--i: ${i}`}>
+            <span class="n">{i + 1}</span>
+            <div>
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="sin-cuenta">
+      ¿Todavía no tienes cuenta? La crea la academia cuando el alumno se
+      matricula. <a href={pedirCuenta} target="_blank" rel="noopener">Pídela por WhatsApp</a>.
+    </p>
+  </div>
+</section>
+
+<script>
+  // En un iPhone el boton bajaria un archivo que no se puede abrir: se avisa.
+  if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+    document.querySelector('.aviso-iphone')?.removeAttribute('hidden');
+  }
+</script>
+
+<style>
+  .panel {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    align-items: center;
+    gap: 40px;
+    padding: clamp(28px, 5vw, 56px);
+    border-radius: var(--radio-grande);
+    background: var(--garabatos), var(--rosa-suave);
+    overflow: hidden;
+  }
+
+  .panel-texto { position: relative; z-index: 1; display: grid; gap: 16px; justify-items: start; }
+  .panel-texto > p { max-width: 30rem; color: var(--texto-suave); font-size: 1.08rem; }
+
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 6px; }
+  .requisito { font-size: 0.88rem; color: var(--texto-suave); }
+
+  .aviso-iphone {
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #fff;
+    font-weight: 600;
+    font-size: 0.93rem;
+  }
+
+  .qr {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    padding: 24px;
+    border-radius: var(--radio);
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 16px 36px rgba(254, 0, 129, 0.14);
+  }
+
+  .qr-codigo { width: 168px; }
+  .qr-codigo :global(svg) { width: 100%; height: auto; }
+  .qr p { max-width: 16rem; font-size: 0.88rem; color: var(--texto-suave); line-height: 1.5; }
+
+  .panel-mascota {
+    position: absolute;
+    right: -20px;
+    bottom: -30px;
+    width: 180px;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+
+  .instalar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .instalar li { display: flex; gap: 16px; align-items: start; }
+
+  .n {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--tinta);
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .instalar h3 { font-size: 1.05rem; margin: 6px 0 6px; }
+  .instalar p { color: var(--texto-suave); font-size: 0.95rem; }
+
+  .sin-cuenta {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--borde);
+    color: var(--texto-suave);
+  }
+
+  .sin-cuenta a { color: var(--rosa); font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .panel { grid-template-columns: 1fr; }
+    .instalar { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* En el celular el QR no sirve: ya se esta en el telefono. */
+  @media (max-width: 600px) {
+    .qr { display: none; }
+    .panel-mascota { width: 140px; }
+  }
+</style>

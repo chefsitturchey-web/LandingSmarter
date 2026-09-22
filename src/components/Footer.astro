@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import { img } from '../lib/img';
+import { academia, programas } from '../data/site';
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="pie">
+  <div class="contenedor">
+    <div class="cierre" data-aparece>
+      <h2>¿Listo para empezar?</h2>
+      <p>Únete a la familia SMARTER y dale al alumno la mejor preparación.</p>
+      <a href="/#inscripcion" class="boton boton-rosa">Quiero inscribirme</a>
+    </div>
+
+    <div class="columnas">
+      <div class="marca">
+        <span class="logo-chip">
+          <Image src={img('logo')} alt="Academia SMARTER" width={260} />
+        </span>
+        <p>{academia.lema}. Academia de primaria y secundaria.</p>
+      </div>
+
+      <div>
+        <h3>Programas</h3>
+        <ul>{programas.map((p) => <li><a href="/#programas">{p.nombre}</a></li>)}</ul>
+      </div>
+
+      <div>
+        <h3>La app</h3>
+        <ul>
+          <li><a href="/#la-app">Qué hace</a></li>
+          <li><a href="/#banco">Banco SMARTER</a></li>
+          <li><a href="/#descarga">Descargar para Android</a></li>
+          <li><a href="/#preguntas">Preguntas</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Contacto</h3>
+        <ul>
+          <li><a href={`https://wa.me/${academia.whatsapp}`} target="_blank" rel="noopener">WhatsApp {academia.telefono}</a></li>
+          <li><a href={`mailto:${academia.correo}`}>{academia.correo}</a></li>
+          <li>{academia.ciudad}</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="legal">© {anio} {academia.nombre}. Hecho en Perú.</p>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    padding-block: var(--seccion) 32px;
+    background: var(--tinta);
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .cierre {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    padding-bottom: var(--seccion);
+    text-align: center;
+  }
+
+  .cierre h2 { color: #fff; }
+  .cierre p { font-size: 1.08rem; }
+
+  .columnas {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 32px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .marca { display: grid; gap: 16px; align-content: start; max-width: 280px; }
+
+  .logo-chip {
+    justify-self: start;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: #fff;
+  }
+
+  .logo-chip img { width: 120px; }
+
+  h3 { margin-bottom: 14px; color: #fff; font-size: 0.95rem; }
+
+  ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 0.93rem; }
+
+  a { text-decoration: none; }
+  a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+  .legal {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 860px) {
+    .columnas { grid-template-columns: 1fr 1fr; }
+    .marca { grid-column: 1 / -1; }
+  }
+</style>

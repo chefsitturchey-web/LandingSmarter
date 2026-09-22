@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+import { img } from '../lib/img';
+import { pasos } from '../data/site';
+---
+
+<section class="seccion" id="como-funciona">
+  <div class="contenedor">
+    <div class="cabecera" data-aparece>
+      <span class="etiqueta">Cómo empezar</span>
+      <h2>De la consulta a la primera clase</h2>
+      <p>Cuatro pasos y el alumno ya está aprendiendo, sin papeleo ni filas.</p>
+    </div>
+
+    <ol class="pasos">
+      {
+        pasos.map((p, i) => (
+          <li class="paso" data-aparece style={`--i: ${i}`}>
+            <div class="paso-arte">
+              <Image src={img(`mascota-${p.pose}`)} alt="" width={400} />
+            </div>
+            <span class="paso-n">Paso {i + 1}</span>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pasos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(16px, 2.4vw, 28px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: paso;
+  }
+
+  .paso { display: grid; gap: 8px; align-content: start; }
+
+  .paso-arte {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 0.9;
+    margin-bottom: 10px;
+    border-radius: var(--radio);
+    background: var(--fondo-2);
+  }
+
+  .paso-arte img {
+    position: absolute;
+    inset: 11%;
+    width: 78%;
+    height: 78%;
+    object-fit: contain;
+    transition: transform .4s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  @media (hover: hover) {
+    .paso:hover .paso-arte img { transform: scale(1.06) rotate(-2deg); }
+  }
+
+  .paso:nth-child(2) .paso-arte { background: var(--morado-suave); }
+  .paso:nth-child(3) .paso-arte { background: #E6ECFF; }
+  .paso:nth-child(4) .paso-arte { background: var(--rosa-suave); }
+
+  .paso-n {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--morado);
+  }
+
+  .paso p { color: var(--texto-suave); font-size: 0.97rem; }
+
+  @media (max-width: 960px) {
+    .pasos { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 520px) {
+    .pasos { grid-template-columns: 1fr; }
+    .paso {
+      grid-template-columns: 112px 1fr;
+      grid-template-rows: auto auto 1fr;
+      column-gap: 16px;
+    }
+    .paso-arte { grid-row: 1 / 4; margin: 0; aspect-ratio: 1; align-self: start; }
+  }
+</style>

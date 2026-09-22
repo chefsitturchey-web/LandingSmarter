@@ -1,0 +1,164 @@
+---
+import { academia, grados, modalidades, programas } from '../data/site';
+
+const incluye = [
+  'Clases virtuales en vivo o presenciales en sede',
+  'La app para el alumno y para el apoderado',
+  'Monedas SMARTER que premian el avance',
+  'Un coordinador que te atiende por WhatsApp',
+];
+---
+
+<section class="seccion inscripcion" id="inscripcion">
+  <div class="contenedor grid">
+    <div class="texto" data-aparece="izq">
+      <span class="etiqueta">Inscripción</span>
+      <h2>Déjanos tus datos y te escribimos</h2>
+      <p>
+        El formulario arma el mensaje y lo abre en WhatsApp: solo tienes que
+        enviarlo. Un coordinador te responde en menos de una hora.
+      </p>
+      <ul>
+        {incluye.map((i) => <li>{i}</li>)}
+      </ul>
+    </div>
+
+    <form class="formulario" data-aparece="der" style="--i: 1" id="form-inscripcion" data-whatsapp={academia.whatsapp}>
+      <label>
+        Nombre del alumno
+        <input name="alumno" required autocomplete="off" placeholder="Ej. Sofía Quispe" />
+      </label>
+
+      <div class="fila">
+        <label>
+          Grado
+          <select name="grado" required>
+            <option value="">Elige</option>
+            {grados.map((g) => <option>{g}</option>)}
+          </select>
+        </label>
+        <label>
+          Modalidad
+          <select name="modalidad">
+            {modalidades.map((m) => <option>{m}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <label>
+        Programa de interés
+        <select name="programa" id="f-programa">
+          <option value="">Aún no sé, quiero que me recomienden</option>
+          {programas.map((p) => <option>{p.nombre}</option>)}
+        </select>
+      </label>
+
+      <label>
+        Tu nombre (apoderado)
+        <input name="apoderado" required autocomplete="name" placeholder="Ej. Carmen Rojas" />
+      </label>
+
+      <button type="submit" class="boton boton-rosa">Enviar por WhatsApp</button>
+      <p class="nota">Tus datos solo los ve la academia.</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#form-inscripcion');
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const campo = (k: string) => String(d.get(k) ?? '').trim();
+
+    const lineas = [
+      'Hola, quiero información para inscribir a un alumno en SMARTER.',
+      '',
+      `Alumno: ${campo('alumno')}`,
+      `Grado: ${campo('grado')}`,
+      `Programa: ${campo('programa') || 'Que me recomienden'}`,
+      `Modalidad: ${campo('modalidad')}`,
+      `Apoderado: ${campo('apoderado')}`,
+    ];
+
+    const url = `https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(lineas.join('\n'))}`;
+    window.open(url, '_blank', 'noopener');
+  });
+</script>
+
+<style>
+  .inscripcion { background: var(--fondo-2); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .texto { display: grid; gap: 16px; }
+  .texto > p { color: var(--texto-suave); font-size: 1.08rem; }
+
+  .texto ul { display: grid; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
+
+  .texto li { display: flex; gap: 12px; align-items: center; font-weight: 500; }
+
+  .texto li::before {
+    content: '';
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--rosa) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 14px no-repeat;
+  }
+
+  .formulario {
+    display: grid;
+    gap: 18px;
+    padding: clamp(24px, 4vw, 36px);
+    border-radius: var(--radio-grande);
+    background: var(--fondo);
+    box-shadow: 0 24px 60px rgba(26, 23, 48, 0.08);
+  }
+
+  .fila { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  label {
+    display: grid;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  input, select {
+    width: 100%;
+    min-height: 50px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--borde);
+    border-radius: 14px;
+    background: var(--fondo);
+    color: var(--texto);
+    font: 400 1rem var(--letra);
+  }
+
+  input::placeholder { color: #A29FB5; }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--morado);
+    box-shadow: 0 0 0 4px var(--morado-suave);
+  }
+
+  .formulario .boton { width: 100%; margin-top: 4px; }
+
+  .nota { text-align: center; font-size: 0.85rem; color: var(--texto-suave); }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 420px) {
+    .fila { grid-template-columns: 1fr; }
+  }
+</style>

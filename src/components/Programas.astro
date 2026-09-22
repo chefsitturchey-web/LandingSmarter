@@ -1,0 +1,117 @@
+---
+import { programas } from '../data/site';
+---
+
+<section class="seccion programas" id="programas">
+  <div class="contenedor">
+    <div class="cabecera" data-aparece>
+      <span class="etiqueta">Programas</span>
+      <h2>Uno para cada momento del año</h2>
+      <p>
+        Nuestros docentes evalúan al alumno y te recomiendan el programa que le
+        va mejor. Todos van de 1.° de primaria a 5.° de secundaria.
+      </p>
+    </div>
+
+    <ul class="lista">
+      {
+        programas.map((p, i) => (
+          <li class:list={['programa', 'levanta', { estrella: p.destacado }]} data-aparece style={`--i: ${i % 3}`}>
+            {p.destacado && <span class="sello">{p.destacado}</span>}
+            <span class="para">{p.para}</span>
+            <h3>{p.nombre}</h3>
+            <p>{p.texto}</p>
+            <a href="#inscripcion" class="consultar" data-programa={p.nombre}>
+              Consultar este programa <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  // "Consultar este programa" deja el programa ya elegido en el formulario.
+  for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-programa]')) {
+    a.addEventListener('click', () => {
+      const campo = document.querySelector<HTMLSelectElement>('#f-programa');
+      if (campo) campo.value = a.dataset.programa ?? '';
+    });
+  }
+</script>
+
+<style>
+  .programas { background: var(--fondo-2); }
+
+  .lista {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .programa {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    border-radius: var(--radio);
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+  }
+
+  .para {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--morado);
+  }
+
+  .programa p { color: var(--texto-suave); font-size: 0.97rem; flex: 1; }
+
+  .consultar {
+    margin-top: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--rosa);
+    text-decoration: none;
+  }
+
+  .consultar span { display: inline-block; transition: translate .2s ease; }
+  .programa:hover .consultar span { translate: 4px 0; }
+
+  .estrella {
+    background: linear-gradient(150deg, var(--tinta) 0%, var(--tinta-2) 100%);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .estrella .para { color: #C9BBFF; }
+  .estrella p { color: rgba(255, 255, 255, 0.78); }
+  .estrella .consultar { color: #FF7DBE; }
+
+  .sello {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--oro);
+    color: var(--tinta);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 960px) {
+    .lista { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 600px) {
+    .lista { grid-template-columns: 1fr; }
+    .programa { padding: 24px; }
+  }
+</style>

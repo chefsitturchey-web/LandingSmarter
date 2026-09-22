@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import { img } from '../lib/img';
+import { juegos } from '../data/site';
+---
+
+<section class="seccion juegos" id="juegos">
+  <div class="contenedor">
+    <div class="cabecera" data-aparece>
+      <span class="etiqueta">Juegos</span>
+      <h2>Para el rato libre, juegos que hacen pensar</h2>
+      <p>
+        Mientras espera su clase, el alumno juega, reta a sus compañeros y
+        sube en el ranking de la academia. Las monedas no se ganan jugando:
+        esas se ganan en clase.
+      </p>
+    </div>
+
+    <ul class="chips" aria-label="Juegos de la app">
+      {juegos.lista.map((j, i) => <li data-aparece="pop" style={`--i: ${i}`}>{j}</li>)}
+    </ul>
+
+    <div class="abanico">
+      {
+        juegos.pantallas.map((p, i) => (
+          <figure class:list={['pantalla', `pantalla-${i + 1}`]} data-aparece style={`--i: ${i === 1 ? 0 : 2}`}>
+            <div class="marco">
+              <Image src={img(p.img)} alt={`${p.titulo} en la app SMARTER`} width={600} />
+            </div>
+            <figcaption>
+              <strong>{p.titulo}</strong>
+              <span>{p.texto}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .juegos {
+    background: var(--garabatos), var(--fondo);
+    overflow: hidden;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: -20px 0 clamp(40px, 6vw, 64px);
+    padding: 0;
+    list-style: none;
+  }
+
+  .chips li {
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--fondo);
+    border: 1.5px solid var(--borde);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .chips li:nth-child(4n + 1) { border-color: #FFB3D8; }
+  .chips li:nth-child(4n + 2) { border-color: #CDBFFF; }
+  .chips li:nth-child(4n + 3) { border-color: #B9C6FF; }
+  .chips li:nth-child(4n + 4) { border-color: #F5D38A; }
+
+  /* Tres telefonos en abanico: el del medio adelante y mas grande. */
+  .abanico {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    align-items: end;
+    gap: clamp(8px, 3vw, 40px);
+    max-width: 980px;
+    margin-inline: auto;
+  }
+
+  .pantalla { margin: 0; display: grid; gap: 18px; justify-items: center; }
+
+  .marco {
+    width: 100%;
+    padding: 7px;
+    border-radius: 34px;
+    background: var(--tinta);
+    box-shadow: 0 28px 60px rgba(26, 23, 48, 0.22);
+    animation: vaiven 7s ease-in-out infinite;
+  }
+
+  .marco img { width: 100%; border-radius: 28px; }
+
+  .pantalla-1 .marco { rotate: -5deg; animation-delay: -2s; }
+  .pantalla-3 .marco { rotate: 5deg; animation-delay: -4.5s; }
+  .pantalla-2 { position: relative; z-index: 1; }
+
+  figcaption { display: grid; gap: 2px; text-align: center; max-width: 16rem; }
+  figcaption strong { font-size: 1.05rem; }
+  figcaption span { font-size: 0.9rem; color: var(--texto-suave); line-height: 1.5; }
+
+  @media (max-width: 700px) {
+    .abanico { grid-template-columns: 0.8fr 1fr 0.8fr; gap: 0; align-items: center; }
+    .pantalla-1 { margin-right: -14%; }
+    .pantalla-3 { margin-left: -14%; }
+    .marco { padding: 4px; border-radius: 20px; }
+    .marco img { border-radius: 16px; }
+    /* En el celular los textos no caben debajo de cada uno: basta el del medio. */
+    .pantalla-1 figcaption, .pantalla-3 figcaption { display: none; }
+    .pantalla-2 figcaption { position: absolute; top: 100%; left: 50%; translate: -50% 16px; width: 240px; }
+    .abanico { padding-bottom: 90px; }
+  }
+</style>

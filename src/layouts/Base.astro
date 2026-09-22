@@ -1,0 +1,61 @@
+---
+/**
+ * El marco de cualquier pagina: head, fuentes, estilos y la barra de arriba.
+ *
+ * Hoy solo hay una pagina, pero una seccion nueva (materiales, un portal) se
+ * arma igual: `<Base titulo=... descripcion=...>` y su contenido.
+ */
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { academia } from '../data/site';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+}
+
+const { titulo = academia.nombre, descripcion = academia.descripcion } = Astro.props;
+const canonica = new URL(Astro.url.pathname, Astro.site ?? academia.url).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <meta name="theme-color" content="#FE0081" />
+    <link rel="canonical" href={canonica} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/poppins-extrabold.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/fonts/poppins-regular.woff" as="font" type="font/woff" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonica} />
+    <script is:inline>
+      // Antes de pintar: si se van a poder animar, lo que entra al bajar
+      // empieza escondido. Si no, se ve todo quieto desde el principio.
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('anim');
+      }
+    </script>
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Ir al contenido</a>
+    <Nav />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      import { animar } from '../lib/animar';
+      animar();
+    </script>
+  </body>
+</html>
