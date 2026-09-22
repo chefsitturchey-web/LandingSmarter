@@ -20,7 +20,7 @@ export const academia = {
   telefono: '+51 999 888 777',
   correo: 'info@smarter.edu.pe',
   ciudad: 'Lima, Perú',
-  url: 'https://landing-smarter.pages.dev',
+  url: 'https://smarter-academy.chefsitturchey.workers.dev',
 };
 
 /** La app para Android.
