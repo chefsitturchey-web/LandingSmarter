@@ -8,7 +8,7 @@ Sitio web público de la Academia SMARTER: programas, inscripción por WhatsApp
 y descarga de la app para alumnos y apoderados.
 
 [![Astro](https://img.shields.io/badge/Astro-7-FF5D01?logo=astro&logoColor=white)](https://astro.build)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com)
 [![Node](https://img.shields.io/badge/Node-%E2%89%A5%2022.12-5FA04E?logo=nodedotjs&logoColor=white)](https://nodejs.org)
 
