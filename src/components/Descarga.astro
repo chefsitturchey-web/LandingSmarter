@@ -5,7 +5,8 @@ import { img } from '../lib/img';
 import { academia, app, descarga } from '../data/site';
 
 // El codigo se dibuja al compilar: la web no carga ninguna libreria para esto.
-const qr = await QRCode.toString(app.apk, {
+// El QR necesita la direccion completa: lo lee otro telefono, no esta pagina.
+const qr = await QRCode.toString(new URL(app.apk, academia.url).href, {
   type: 'svg',
   margin: 0,
   errorCorrectionLevel: 'M',
@@ -35,7 +36,7 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
             </svg>
             Descargar para Android
           </a>
-          <span class="requisito">Versión {app.version} · {app.requisito}</span>
+          <span class="requisito">Versión <span data-version>{app.version}</span> · {app.requisito}</span>
         </div>
 
         <p class="aviso-iphone" hidden>
@@ -77,6 +78,15 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
   if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
     document.querySelector('.aviso-iphone')?.removeAttribute('hidden');
   }
+
+  // La version que se baja de verdad. Si no responde, queda la del sitio.
+  fetch('/descargar/info')
+    .then((r) => (r.ok ? r.json() : null))
+    .then((info) => {
+      const donde = document.querySelector('[data-version]');
+      if (info?.version && donde) donde.textContent = info.version;
+    })
+    .catch(() => {});
 </script>
 
 <style>

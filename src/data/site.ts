@@ -25,12 +25,15 @@ export const academia = {
 
 /** La app para Android.
  *
- * El APK vive en las Releases de GitHub y no en esta web: Cloudflare Pages no
- * sirve archivos de mas de 25 MB. Este enlace siempre baja la ultima version
- * publicada, asi que subir una version nueva no obliga a tocar la web. */
+ * El APK vive en Cloudflare R2, no en esta web: Workers no sirve archivos de
+ * mas de 25 MB. `/descargar` lo atiende el Worker (worker/index.js): pregunta
+ * a Supabase cual es la ultima version publicada y redirige a su APK, asi que
+ * publicar una version nueva no obliga a tocar la web ni cambia el QR.
+ *
+ * `version` es lo que se muestra mientras la pagina consulta la de verdad. */
 export const app = {
-  apk: 'https://github.com/milenis131-sys/smarter-app/releases/latest/download/smarter.apk',
-  version: '1.0',
+  apk: '/descargar',
+  version: '1.0.1',
   requisito: 'Android 7 o superior',
 };
 
@@ -157,7 +160,7 @@ export const descarga = {
   pasos: [
     {
       titulo: 'Descarga el archivo',
-      texto: 'Toca el botón desde tu celular Android o escanea el código. Baja un archivo llamado smarter.apk.',
+      texto: 'Toca el botón desde tu celular Android o escanea el código. Baja un archivo que empieza con smarter y termina en .apk.',
     },
     {
       titulo: 'Permite la instalación',

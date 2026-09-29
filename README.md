@@ -167,18 +167,22 @@ Después, actualiza `site` en `astro.config.mjs` y `academia.url` en
 
 ## Publicar una versión de la app
 
-El APK pesa unos 27 MB y Cloudflare no sirve archivos de más de 25 MB, así que
-se distribuye desde **GitHub Releases**:
+El APK pesa unos 88 MB y Cloudflare Workers no sirve archivos de más de 25 MB,
+así que vive en **Cloudflare R2** (bucket `smarter-apk`). La web no enlaza el
+archivo directamente: el botón y el QR apuntan a **`/descargar`**, que atiende
+`worker/index.js`. El Worker pregunta a Supabase cuál es la última versión
+publicada (`app_releases`) y redirige a su APK.
 
-1. En la app: `flutter build apk --release`.
-2. Renombra `build/app/outputs/flutter-apk/app-release.apk` a `smarter.apk`.
-3. En GitHub: *Releases → Draft a new release*, crea una etiqueta nueva
-   (por ejemplo `v1.0.1`) y adjunta `smarter.apk`.
+Publicar una versión nueva no toca esta web:
 
-El botón de descarga apunta a `releases/latest/download/smarter.apk`, así que
-siempre entrega la última versión sin tocar el sitio. El repositorio de las
-Releases debe ser público. Para mostrar el número de versión nuevo, actualiza
-`app.version` en `src/data/site.ts`.
+1. En la app, genera el APK con Shorebird (ver `docs/actualizaciones.md` del
+   repositorio de la app).
+2. Súbelo a la raíz del bucket R2 como `smarter-<version>-<build>.apk`.
+3. Inserta su fila en `app_releases` y márcala `published = true`.
+
+En unos 5 minutos `/descargar` entrega la versión nueva y la sección de
+descarga muestra su número. Si Supabase no respondiera, el Worker usa la última
+versión conocida (`RESPALDO` en `worker/index.js`).
 
 ## Próximos pasos
 

@@ -1,11 +1,13 @@
-// Publicacion en Cloudflare Workers: la web es estatica, asi que el Worker
-// solo sirve lo que deja `npm run build` en dist/.
+// Publicacion en Cloudflare Workers: el Worker sirve lo que deja
+// `npm run build` en dist/ y atiende /descargar (ver worker/index.js).
 // El nombre tiene que ser el mismo que el del proyecto en Cloudflare.
 {
   "name": "smarter-academy",
   "compatibility_date": "2026-09-01",
+  "main": "./worker/index.js",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
   }
 }
