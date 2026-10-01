@@ -15,10 +15,11 @@ export const academia = {
   lema: 'Creando mentes brillantes, hoy y siempre',
   descripcion:
     'Clases de primaria y secundaria en grupos pequeños o particulares, virtuales o presenciales. Nivelación, reforzamiento y avanzado, con una app donde el alumno gana monedas por aprender.',
-  // EJEMPLO
-  whatsapp: '51999888777',
-  telefono: '+51 999 888 777',
-  correo: 'info@smarter.edu.pe',
+  // El formulario de inscripcion y los botones de WhatsApp escriben a este
+  // numero: con el codigo de pais y sin signos.
+  whatsapp: '51992655841',
+  telefono: '+51 992 655 841',
+  correo: 'academiasmarterpuno@gmail.com',
   ciudad: 'Puno, Perú',
   url: 'https://smarter-academy.chefsitturchey.workers.dev',
 };
