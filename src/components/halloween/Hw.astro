@@ -1,0 +1,25 @@
+---
+/**
+ * Una ilustracion de Halloween, de adorno.
+ *
+ * Con `loading="lazy"` y dentro de un `.hw`, que fuera de temporada no se
+ * muestra: el navegador no la pide hasta que haga falta pintarla, asi que el
+ * resto del ano la pagina no descarga ninguna.
+ */
+interface Props {
+  nombre: string;
+  class?: string;
+}
+
+const { nombre, class: clase } = Astro.props;
+---
+
+<img
+  class={clase}
+  src={`/halloween/${nombre}.webp`}
+  alt=""
+  width="256"
+  height="256"
+  loading="lazy"
+  decoding="async"
+/>

@@ -1,0 +1,26 @@
+---
+/**
+ * Lo que acompana por toda la pagina: hojas y caramelos que caen despacio, y
+ * lo que asoma por los margenes en pantallas anchas.
+ *
+ * Todo de adorno y sin toques. Va dentro de <main>.
+ */
+import Hw from './Hw.astro';
+---
+
+<div class="hw hw-lluvia" aria-hidden="true">
+  <Hw nombre="maple_leaf" />
+  <Hw nombre="candy" />
+  <Hw nombre="maple_leaf" />
+  <Hw nombre="lollipop" />
+  <Hw nombre="maple_leaf" />
+  <Hw nombre="candy" />
+</div>
+
+<div class="hw-margenes" aria-hidden="true">
+  <Hw nombre="ghost" class="g1" />
+  <Hw nombre="owl" class="g2" />
+  <Hw nombre="skull" class="g3" />
+  <Hw nombre="candy" class="g4" />
+  <Hw nombre="ghost" class="g5" />
+</div>

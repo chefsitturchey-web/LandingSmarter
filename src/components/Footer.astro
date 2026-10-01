@@ -2,11 +2,21 @@
 import { Image } from 'astro:assets';
 import { img } from '../lib/img';
 import { academia, programas } from '../data/site';
+import Hw from './halloween/Hw.astro';
 
 const anio = new Date().getFullYear();
 ---
 
 <footer class="pie">
+  <!-- Halloween: calabazas, un gato y una vela sobre el borde del pie. -->
+  <div class="hw hw-pie" aria-hidden="true">
+    <Hw nombre="jack_o_lantern" class="p1" />
+    <Hw nombre="jack_o_lantern" class="p2" />
+    <Hw nombre="black_cat" class="p3" />
+    <Hw nombre="jack_o_lantern" class="p4" />
+    <Hw nombre="candle" class="p5" />
+  </div>
+
   <div class="contenedor">
     <div class="cierre" data-aparece>
       <h2>¿Listo para empezar?</h2>

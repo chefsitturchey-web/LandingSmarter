@@ -6,6 +6,8 @@
  * arma igual: `<Base titulo=... descripcion=...>` y su contenido.
  */
 import '../styles/global.css';
+import '../styles/halloween.css';
+import Ambiente from '../components/halloween/Ambiente.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { academia } from '../data/site';
@@ -38,6 +40,24 @@ const canonica = new URL(Astro.url.pathname, Astro.site ?? academia.url).href;
     <meta property="og:description" content={descripcion} />
     <meta property="og:url" content={canonica} />
     <script is:inline>
+      // Halloween: del 1 al 31 de octubre de 2026 la pagina se disfraza sola,
+      // y el 1 de noviembre vuelve a lo normal sin publicar nada. Va antes de
+      // pintar para que no se vea un salto de colores al cargar.
+      //
+      // Para verla fuera de fecha, o apagarla dentro: `?temporada=halloween`
+      // o `?temporada=normal` al final de la direccion.
+      (function () {
+        var pedida = new URLSearchParams(location.search).get('temporada');
+        var hoy = new Date();
+        var enFecha = hoy >= new Date(2026, 9, 1) && hoy < new Date(2026, 10, 1);
+        if (pedida === 'halloween' || (pedida !== 'normal' && enFecha)) {
+          document.documentElement.dataset.temporada = 'halloween';
+          var color = document.querySelector('meta[name="theme-color"]');
+          if (color) color.content = '#1B1030';
+        }
+      })();
+    </script>
+    <script is:inline>
       // Antes de pintar: si se van a poder animar, lo que entra al bajar
       // empieza escondido. Si no, se ve todo quieto desde el principio.
       if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -50,6 +70,7 @@ const canonica = new URL(Astro.url.pathname, Astro.site ?? academia.url).href;
     <Nav />
     <main id="contenido">
       <slot />
+      <Ambiente />
     </main>
     <Footer />
 

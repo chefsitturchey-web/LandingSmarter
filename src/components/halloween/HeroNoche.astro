@@ -1,0 +1,50 @@
+---
+/**
+ * La noche de la portada: estrellas, luna, murcielagos que cruzan, un
+ * fantasma, telaranas en las esquinas y un cementerio en silueta abajo.
+ *
+ * Va dentro de la portada y por detras de su contenido. No recibe toques.
+ */
+import Hw from './Hw.astro';
+---
+
+<div class="hw hw-cielo" aria-hidden="true">
+  <span class="hw-estrellas"></span>
+  <Hw nombre="full_moon" class="hw-luna" />
+
+  <Hw nombre="bat" class="hw-murcielago m1" />
+  <Hw nombre="bat" class="hw-murcielago m2" />
+  <Hw nombre="bat" class="hw-murcielago m3" />
+  <Hw nombre="bat" class="hw-murcielago m4" />
+
+  <Hw nombre="spider_web" class="hw-tela izq" />
+  <Hw nombre="spider_web" class="hw-tela der" />
+
+  <!-- Lomas, lapidas, cruces y un arbol seco. Se recorta por los lados en
+       pantallas angostas en vez de aplastarse. -->
+  <svg class="hw-cementerio" viewBox="0 0 1440 170" preserveAspectRatio="xMidYMax slice">
+    <path d="M0 170V112C90 86 200 96 300 104C420 114 500 70 640 78C780 86 860 122 980 112C1100 102 1180 64 1300 74C1370 80 1410 96 1440 104V170Z" />
+    <path d="M103 100V72a17 17 0 0 1 34 0V100Z" />
+    <path d="M238 108V88a12 12 0 0 1 24 0V108Z" />
+    <path d="M556 82V38h8V82ZM544 50h32v8H544Z" />
+    <path d="M684 92V60a18 18 0 0 1 36 0V92Z" />
+    <path d="M888 126C890 100 893 80 891 50L896 50C899 80 900 100 904 126Z" />
+    <path
+      d="M893 78L874 56L868 40M874 56L862 54M896 66L916 46L920 30M916 46L930 44M893 54L886 34"
+      fill="none"
+      stroke="#120A22"
+      stroke-width="4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path d="M1074 110V82a16 16 0 0 1 32 0V110Z" />
+    <path d="M1236 74V28h8V74ZM1224 40h32v8H1224Z" />
+    <path d="M1346 90V64a14 14 0 0 1 28 0V90Z" />
+  </svg>
+
+  <Hw nombre="jack_o_lantern" class="hw-calabaza c1" />
+  <Hw nombre="jack_o_lantern" class="hw-calabaza c2" />
+  <Hw nombre="jack_o_lantern" class="hw-calabaza c3" />
+  <Hw nombre="black_cat" class="hw-gato" />
+  <Hw nombre="ghost" class="hw-fantasma" />
+</div>
