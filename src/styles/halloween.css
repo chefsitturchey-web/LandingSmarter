@@ -353,7 +353,10 @@
 
 @media (max-width: 860px) {
   .hw-murcielago.m3, .hw-murcielago.m4 { display: none; }
-  .hw-fantasma { left: 4%; }
+  /* Con el arte arriba, las cifras llegan casi hasta el cementerio: mas sitio
+     debajo, y el fantasma a la derecha, donde no pisa ninguna. */
+  :root[data-temporada='halloween'] .hero { padding-bottom: 176px; }
+  .hw-fantasma { left: auto; right: 9%; bottom: 66px; width: 46px; }
   .hw-gato { display: none; }
   .hw-arana.a2, .hw-arana.a3 { display: none; }
   .hw-arana.a1 { right: 26%; --hilo: 30px; --lado: 26px; }

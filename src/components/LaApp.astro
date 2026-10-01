@@ -273,5 +273,10 @@ const figuras = ['circulo', 'cuadrado'] as const;
     .pegado-1 { width: 80px; }
     .pegado-2 { width: 60px; }
     .peldano { border-radius: 10px 10px 0 0; padding-inline: 2px; }
+    /* La palabra "monedas" no cabe en un peldano tan angosto: queda el
+       numero, mas grande, y la unidad ya la dice el texto de arriba. */
+    .peldano strong { font-size: 0.72rem; }
+    .peldano span { font-size: 0; }
+    .peldano b { font-size: 1.25rem; }
   }
 </style>

@@ -321,15 +321,39 @@ const titular = ['Creando', 'mentes', 'brillantes,', 'hoy', 'y', 'siempre.'];
     50% { translate: 0 -14px; rotate: 3deg; }
   }
 
+  /* En el celular el arte va arriba y el texto debajo. Con el texto primero,
+     la primera pantalla era un bloque de letras y la mascota quedaba cortada
+     al borde; asi lo primero que se ve es la marca, y el boton de inscribirse
+     sigue entrando sin bajar. */
   @media (max-width: 860px) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .hero-arte { min-height: 340px; max-width: 400px; width: 100%; justify-self: center; }
-    .hero-disco { width: min(88%, 340px); }
-    .hero-mascota { width: min(270px, 68%); }
-    .forma-t { right: 2%; }
-    .forma-c { left: 0; }
-    .moneda-chip { left: 0; }
-    .flota-3 { right: 0; }
+    .hero { padding-top: 18px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 14px; }
+    .hero-texto { gap: 18px; }
+
+    .hero-arte {
+      order: -1;
+      width: 100%;
+      max-width: 380px;
+      min-height: 0;
+      height: clamp(230px, 64vw, 300px);
+      justify-self: center;
+    }
+
+    /* Por ancho y no por alto: la capa no tiene un alto del que sacar un
+       porcentaje, y la imagen se iba a su tamano natural. */
+    .hero-disco { width: min(63%, 240px); box-shadow: 0 0 0 12px rgba(255, 255, 255, 0.08); }
+    .hero-mascota { width: min(41%, 158px); }
+    .forma { display: none; }
+
+    .flota-1 { width: 17%; left: 5%; top: 14%; }
+    .flota-2 { width: 15%; right: 7%; top: 6%; }
+    .flota-3 { width: 22%; right: 3%; bottom: 0; }
+    .moneda-chip { left: 3%; bottom: 8%; padding: 7px 12px; font-size: 0.82rem; }
+
+    /* Los dos botones a todo el ancho: se alcanzan con el pulgar de
+       cualquiera de las dos manos. */
+    .hero-botones { display: grid; width: 100%; gap: 12px; }
+    .hero-botones .boton { width: 100%; }
   }
 
   /* En el celular las tres cifras van en una sola fila, con el texto de

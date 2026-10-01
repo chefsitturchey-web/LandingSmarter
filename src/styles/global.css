@@ -87,6 +87,13 @@ body {
   overflow-x: clip;
 }
 
+/* En el celular: sin el destello gris al tocar (cada cosa ya responde a su
+   manera) y sin la espera del doble toque. */
+a, button, summary, select, input {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
 img, svg { display: block; max-width: 100%; height: auto; }
 
 h1, h2, h3 {
@@ -115,6 +122,12 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 0.0
 }
 
 .seccion { padding-block: var(--seccion); }
+
+/* En el celular las secciones se juntan un poco: con el mismo aire que en
+   escritorio, la pagina se hacia interminable de bajar. */
+@media (max-width: 560px) {
+  :root { --seccion: 56px; }
+}
 
 /* El titulo de una seccion y, si hace falta, una linea que lo acompana. */
 .cabecera {
