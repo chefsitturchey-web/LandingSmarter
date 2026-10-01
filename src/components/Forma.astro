@@ -1,0 +1,31 @@
+---
+/**
+ * Una de las tres figuras de la marca: las que llevan los personajes del
+ * Banco SMARTER en la mascara. Solo el trazo, del color del texto que la
+ * rodea, para usarla de adorno a cualquier tamano.
+ */
+interface Props {
+  tipo: 'circulo' | 'triangulo' | 'cuadrado';
+  class?: string;
+  grosor?: number;
+}
+
+// `resto` lleva la marca de estilos del componente que la usa, para que
+// pueda darle tamano y posicion desde su propio <style>.
+const { tipo, class: clase, grosor = 6, ...resto } = Astro.props;
+---
+
+<svg
+  class={clase}
+  viewBox="0 0 100 100"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={grosor}
+  stroke-linejoin="round"
+  aria-hidden="true"
+  {...resto}
+>
+  {tipo === 'circulo' && <circle cx="50" cy="50" r="42" />}
+  {tipo === 'triangulo' && <path d="M50 10 92 86H8Z" />}
+  {tipo === 'cuadrado' && <rect x="10" y="10" width="80" height="80" rx="9" />}
+</svg>

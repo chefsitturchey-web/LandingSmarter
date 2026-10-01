@@ -1,0 +1,71 @@
+---
+/**
+ * La cinta que cierra la portada: los programas pasando de derecha a
+ * izquierda, separados por las tres figuras de la marca.
+ *
+ * Es un adorno: los programas se leen completos mas abajo, asi que los
+ * lectores de pantalla la saltan. La lista va dos veces para que la vuelta no
+ * tenga costura.
+ */
+import { programas } from '../data/site';
+import Forma from './Forma.astro';
+
+const figuras = ['circulo', 'triangulo', 'cuadrado'] as const;
+---
+
+<div class="cinta" aria-hidden="true">
+  <div class="cinta-pista">
+    {
+      [0, 1].map(() => (
+        <ul>
+          {programas.map((p, i) => (
+            <li>
+              <Forma tipo={figuras[i % 3]} class="cinta-figura" grosor={11} />
+              {p.nombre}
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .cinta {
+    overflow: hidden;
+    padding-block: 18px;
+    background: var(--banda);
+    color: #fff;
+  }
+
+  .cinta-pista {
+    display: flex;
+    width: max-content;
+    animation: pasar 38s linear infinite;
+  }
+
+  @keyframes pasar {
+    to { translate: -50% 0; }
+  }
+
+  ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  li { display: flex; align-items: center; gap: 0.7em; padding-inline: 1.1em; }
+
+  .cinta-figura { width: 0.82em; color: var(--acento); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cinta-pista { width: auto; }
+    ul:last-child { display: none; }
+    ul { flex-wrap: wrap; justify-content: center; white-space: normal; row-gap: 6px; }
+  }
+</style>

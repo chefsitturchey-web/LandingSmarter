@@ -2,6 +2,9 @@
  * Los mismos colores y la misma letra que la app, para que quien llega de la
  * web reconozca la app al abrirla. Los valores salen de lib/core/theme de la
  * app movil: si cambian alli, cambian aqui.
+ *
+ * La pagina se arma con tres campos de color que ocupan secciones enteras:
+ * blanco, tinta y el rosa de la marca. El rosa no es un adorno sobre blanco.
  */
 
 @font-face { font-family: 'Poppins'; font-weight: 400; font-display: swap; src: url('/fonts/poppins-regular.woff') format('woff'); }
@@ -11,21 +14,35 @@
 @font-face { font-family: 'Poppins'; font-weight: 800; font-display: swap; src: url('/fonts/poppins-extrabold.woff') format('woff'); }
 
 :root {
+  /* El rosa del logo. Para adornos y letra grande: con texto blanco pequeno
+     encima no alcanza el contraste, para eso esta `--acento-fuerte`. */
   --rosa: #FE0081;
-  --rosa-hondo: #D6006D;
-  --rosa-suave: #FFE3F1;
-  --morado: #7C5CFF;
-  --morado-suave: #EEE9FF;
-  --azul: #3B5BFF;
+
+  --acento: var(--rosa);
+  --acento-fuerte: #DE0073;
+  --acento-hondo: #A60055;
+  --acento-suave: #FFE3F1;
+  --sobre-acento: #fff;
+
+  /* El campo: las secciones pintadas enteras del color de la marca. */
+  --campo: #D9006F;
+  --campo-luz: #FE0081;
+  --sobre-campo: #fff;
+  --campo-linea: rgba(255, 255, 255, 0.34);
+  --boton-campo: #fff;
+  --boton-campo-texto: #1A1730;
+  --boton-campo-canto: #8E0049;
+  --resalte: #FFC531;
+
   --oro: #E8A317;
   --tinta: #1A1730;
-  --tinta-2: #3B2A78;
+  --tinta-2: #2A2548;
+  --banda: var(--tinta);
   --texto: #1A1730;
-  --texto-suave: #5E5A75;
+  --texto-suave: #57536E;
   --borde: #E7E4F0;
   --fondo: #FFFFFF;
   --fondo-2: #F7F5FC;
-  --verde-wa: #1FAF55;
 
   --letra: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
@@ -33,11 +50,17 @@
   --radio-grande: 32px;
   --ancho: 1160px;
   --margen: clamp(16px, 4vw, 40px);
-  --seccion: clamp(64px, 9vw, 112px);
+  --seccion: clamp(72px, 9vw, 128px);
+
+  /* Curvas de movimiento: lo que entra frena fuerte al llegar; lo que juega
+     rebota un poco. */
+  --sale: cubic-bezier(0.23, 1, 0.32, 1);
+  --rebote: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Las figuras del Banco SMARTER (circulo, triangulo, cuadrado) como marca
      de agua, igual que el fondo de la app. */
-  --garabatos: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' fill='none' stroke='%237C5CFF' stroke-opacity='.09' stroke-width='3' stroke-linejoin='round'%3E%3Ccircle cx='38' cy='40' r='16'/%3E%3Cpath d='M150 22l20 34h-40z'/%3E%3Crect x='96' y='128' width='30' height='30' rx='5' transform='rotate(12 111 143)'/%3E%3Cpath d='M186 150v22M175 161h22M30 170l14 14M44 170l-14 14'/%3E%3C/svg%3E");
+  --garabatos: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' fill='none' stroke='%231A1730' stroke-opacity='.055' stroke-width='3' stroke-linejoin='round'%3E%3Ccircle cx='38' cy='40' r='16'/%3E%3Cpath d='M150 22l20 34h-40z'/%3E%3Crect x='96' y='128' width='30' height='30' rx='5' transform='rotate(12 111 143)'/%3E%3Cpath d='M186 150v22M175 161h22M30 170l14 14M44 170l-14 14'/%3E%3C/svg%3E");
+  --garabatos-claros: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' fill='none' stroke='%23fff' stroke-opacity='.07' stroke-width='3' stroke-linejoin='round'%3E%3Ccircle cx='38' cy='40' r='16'/%3E%3Cpath d='M150 22l20 34h-40z'/%3E%3Crect x='96' y='128' width='30' height='30' rx='5' transform='rotate(12 111 143)'/%3E%3Cpath d='M186 150v22M175 161h22M30 170l14 14M44 170l-14 14'/%3E%3C/svg%3E");
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -46,7 +69,12 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 84px;
   -webkit-text-size-adjust: 100%;
+  accent-color: var(--acento-fuerte);
+  caret-color: var(--acento-fuerte);
+  scrollbar-color: var(--acento-fuerte) var(--fondo-2);
 }
+
+::selection { background: var(--acento-fuerte); color: var(--sobre-acento); }
 
 body {
   margin: 0;
@@ -63,18 +91,18 @@ img, svg { display: block; max-width: 100%; height: auto; }
 
 h1, h2, h3 {
   margin: 0;
-  line-height: 1.1;
+  line-height: 1.04;
   text-wrap: balance;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
-h2 { font-size: clamp(2rem, 4.4vw, 3.1rem); font-weight: 800; }
-h3 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: clamp(2.1rem, 5vw, 3.6rem); font-weight: 800; }
+h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.015em; }
 p { margin: 0; text-wrap: pretty; }
-a { color: inherit; }
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 0.09em; }
 
 :focus-visible {
-  outline: 3px solid var(--morado);
+  outline: 3px solid var(--tinta);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -88,55 +116,76 @@ a { color: inherit; }
 
 .seccion { padding-block: var(--seccion); }
 
-.etiqueta {
-  display: inline-block;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--rosa);
-}
-
+/* El titulo de una seccion y, si hace falta, una linea que lo acompana. */
 .cabecera {
   display: grid;
-  gap: 14px;
-  max-width: 640px;
-  margin-bottom: clamp(36px, 5vw, 56px);
+  gap: 18px;
+  max-width: 46rem;
+  margin-bottom: clamp(40px, 5.5vw, 72px);
 }
 
-.cabecera p { color: var(--texto-suave); font-size: 1.08rem; }
+.cabecera p { max-width: 38rem; color: var(--texto-suave); font-size: 1.1rem; }
 
+/* Solo para lectores de pantalla. */
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/*
+ * Botones. Con canto, como los de la app: se hunden al pulsarlos.
+ */
 .boton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 52px;
-  padding: 12px 26px;
+  min-height: 54px;
+  padding: 12px 28px;
   border: 0;
   border-radius: 999px;
   font: 700 1rem/1.2 var(--letra);
   text-decoration: none;
   cursor: pointer;
-  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+  transition: translate 0.14s var(--sale), box-shadow 0.14s var(--sale), background-color 0.2s ease, color 0.2s ease;
 }
 
 .boton-rosa {
-  background: var(--rosa);
-  color: #fff;
-  box-shadow: 0 6px 0 var(--rosa-hondo);
+  background: var(--acento-fuerte);
+  color: var(--sobre-acento);
+  box-shadow: 0 5px 0 var(--acento-hondo);
 }
 
-.boton-rosa:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--rosa-hondo); }
-.boton-rosa:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--rosa-hondo); }
+/* El principal cuando ya esta sobre un campo de color. */
+.boton-campo {
+  background: var(--boton-campo);
+  color: var(--boton-campo-texto);
+  box-shadow: 0 5px 0 var(--boton-campo-canto);
+}
+
+.boton-rosa:active, .boton-campo:active { translate: 0 4px; box-shadow: 0 1px 0 var(--acento-hondo); }
+.boton-campo:active { box-shadow: 0 1px 0 var(--boton-campo-canto); }
 
 .boton-borde {
-  background: var(--fondo);
+  background: transparent;
   color: var(--tinta);
-  box-shadow: inset 0 0 0 2px var(--tinta);
+  box-shadow: inset 0 0 0 2px currentColor;
 }
 
-.boton-borde:hover { background: var(--tinta); color: #fff; }
+.boton-borde:active { translate: 0 2px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .boton-rosa:hover { translate: 0 -2px; box-shadow: 0 7px 0 var(--acento-hondo); }
+  .boton-campo:hover { translate: 0 -2px; box-shadow: 0 7px 0 var(--boton-campo-canto); }
+  .boton-rosa:hover:active, .boton-campo:hover:active { translate: 0 4px; }
+  .boton-rosa:hover:active { box-shadow: 0 1px 0 var(--acento-hondo); }
+  .boton-campo:hover:active { box-shadow: 0 1px 0 var(--boton-campo-canto); }
+  .boton-borde:hover { background: var(--tinta); color: #fff; box-shadow: inset 0 0 0 2px var(--tinta); }
+}
 
 .saltar {
   position: absolute;
@@ -157,46 +206,31 @@ a { color: inherit; }
 }
 
 /*
- * Animaciones al bajar.
+ * Entradas al bajar.
  *
  * Un elemento con `data-aparece` entra suave cuando llega a la pantalla; con
  * `style="--i: n"` entra n pasos despues que sus hermanos. Solo se esconde si
  * el navegador puede mostrarlo luego (la clase `anim` la pone el script del
  * head): sin JavaScript, o con "reducir movimiento", todo se ve quieto y
  * completo desde el principio.
+ *
+ * Va solo en los titulos y en las piezas grandes. Lo que ya se mueve por su
+ * cuenta (la portada, la cinta, la escalera) no lo lleva.
  */
 .anim [data-aparece] {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(18px);
   transition:
-    opacity .8s cubic-bezier(.2, .7, .2, 1) calc(var(--i, 0) * 90ms),
-    transform .8s cubic-bezier(.2, .7, .2, 1) calc(var(--i, 0) * 90ms),
-    translate .25s ease,
-    box-shadow .25s ease;
+    opacity 0.6s var(--sale) calc(var(--i, 0) * 60ms),
+    transform 0.6s var(--sale) calc(var(--i, 0) * 60ms);
 }
 
-.anim [data-aparece='zoom'] { transform: scale(.9); }
-.anim [data-aparece='izq'] { transform: translateX(-40px); }
-.anim [data-aparece='der'] { transform: translateX(40px); }
 .anim [data-aparece='pop'] {
-  transform: translateY(18px) scale(.8);
-  transition-timing-function: cubic-bezier(.34, 1.56, .64, 1);
+  transform: translateY(14px) scale(0.94);
+  transition-timing-function: var(--sale), var(--rebote);
 }
 
 .anim [data-aparece].visto { opacity: 1; transform: none; }
-
-/* Las tarjetas se levantan al pasar el mouse. Con `translate` y no con
-   `transform`, para no pelear con la animacion de entrada. */
-.levanta {
-  transition: translate .25s ease, box-shadow .25s ease, border-color .25s ease;
-}
-
-@media (hover: hover) {
-  .levanta:hover {
-    translate: 0 -6px;
-    box-shadow: 0 18px 40px rgba(26, 23, 48, 0.1);
-  }
-}
 
 /* Un flotar lento para lo que decora: telefonos, jugadores. */
 @keyframes vaiven {

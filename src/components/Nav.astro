@@ -84,10 +84,37 @@ const enlaces = [
     font-size: 0.95rem;
   }
 
-  .nav-enlaces a { text-decoration: none; color: var(--texto-suave); }
-  .nav-enlaces a:hover { color: var(--rosa); }
+  .nav-enlaces a {
+    position: relative;
+    padding-block: 6px;
+    text-decoration: none;
+    color: var(--texto-suave);
+    transition: color 0.2s ease;
+  }
 
-  .nav-cta { min-height: 44px; padding: 8px 20px; font-size: 0.95rem; }
+  /* Una raya que crece desde la izquierda: marca la seccion en la que se
+     esta y la que se va a pulsar. */
+  .nav-enlaces a::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--acento);
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale 0.3s var(--sale);
+  }
+
+  .nav-enlaces a[aria-current='true'] { color: var(--tinta); }
+  .nav-enlaces a[aria-current='true']::after { scale: 1 1; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav-enlaces a:hover { color: var(--tinta); }
+    .nav-enlaces a:hover::after { scale: 1 1; }
+  }
+
+  .nav-cta { min-height: 44px; padding: 8px 20px; font-size: 0.95rem; box-shadow: 0 4px 0 var(--acento-hondo); }
 
   .nav-menu { display: none; position: relative; }
 
@@ -118,6 +145,14 @@ const enlaces = [
     border-radius: 16px;
     background: var(--fondo);
     box-shadow: 0 16px 40px rgba(26, 23, 48, 0.16);
+    transform-origin: top right;
+  }
+
+  /* El menu sale de su boton, no de la nada. */
+  .nav-menu[open] nav { animation: abrir-menu 0.2s var(--sale); }
+
+  @keyframes abrir-menu {
+    from { opacity: 0; scale: 0.96; }
   }
 
   .nav-menu nav a {

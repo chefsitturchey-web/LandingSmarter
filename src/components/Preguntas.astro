@@ -1,19 +1,25 @@
 ---
-import { preguntas } from '../data/site';
+import { academia, preguntas } from '../data/site';
+
+const otraDuda = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponent(
+  'Hola, tengo una consulta sobre la Academia SMARTER.',
+)}`;
 ---
 
 <section class="seccion preguntas" id="preguntas">
   <div class="contenedor grid">
     <div class="cabecera" data-aparece>
-      <span class="etiqueta">Preguntas frecuentes</span>
       <h2>Lo que más nos preguntan</h2>
-      <p>¿Tienes otra duda? Escríbenos por WhatsApp y te respondemos.</p>
+      <p>
+        ¿Tienes otra duda?{' '}
+        <a href={otraDuda} target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y te respondemos.
+      </p>
     </div>
 
-    <div class="lista">
+    <div class="lista" data-aparece style="--i: 1">
       {
-        preguntas.map((q, i) => (
-          <details data-aparece style={`--i: ${i}`}>
+        preguntas.map((q) => (
+          <details>
             <summary>{q.p}</summary>
             <p>{q.r}</p>
           </details>
@@ -29,59 +35,74 @@ import { preguntas } from '../data/site';
   .grid {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr;
-    gap: clamp(24px, 5vw, 64px);
+    gap: clamp(24px, 5vw, 72px);
     align-items: start;
   }
 
-  .lista { display: grid; gap: 12px; }
+  .cabecera { position: sticky; top: 108px; margin-bottom: 0; }
+  .cabecera a { color: var(--acento-fuerte); font-weight: 700; }
 
-  details {
-    border-radius: 16px;
-    background: var(--fondo);
-    border: 1px solid var(--borde);
-  }
+  .lista { border-top: 2px solid var(--tinta); }
+
+  details { border-bottom: 1px solid var(--borde); }
 
   summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    padding: 18px 22px;
+    gap: 20px;
+    padding: 22px 4px;
+    font-size: 1.1rem;
     font-weight: 600;
+    letter-spacing: -0.01em;
     cursor: pointer;
     list-style: none;
+    transition: color 0.2s ease;
   }
 
   summary::-webkit-details-marker { display: none; }
 
+  /* El signo de mas, dibujado con dos barras: al abrir, una gira y queda el
+     de menos. */
   summary::after {
-    content: '+';
+    content: '';
     flex: none;
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--fondo-2);
-    color: var(--rosa);
-    font-size: 1.2rem;
-    font-weight: 700;
-    line-height: 1;
-    transition: transform .2s ease;
+    width: 18px;
+    height: 18px;
+    background:
+      linear-gradient(currentColor, currentColor) center / 100% 2.5px no-repeat,
+      linear-gradient(currentColor, currentColor) center / 2.5px 100% no-repeat;
+    transition: rotate 0.3s var(--sale), background-size 0.3s var(--sale);
   }
 
-  details[open] summary::after { transform: rotate(45deg); }
+  details[open] summary::after {
+    rotate: 180deg;
+    background-size: 100% 2.5px, 2.5px 0;
+  }
 
-  details p { padding: 0 22px 20px; color: var(--texto-suave); }
+  @media (hover: hover) and (pointer: fine) {
+    summary:hover { color: var(--acento-fuerte); }
+  }
 
-  details[open] p { animation: abrir .35s ease; }
+  details p { max-width: 38rem; padding: 0 4px 24px; color: var(--texto-suave); }
 
-  @keyframes abrir {
-    from { opacity: 0; translate: 0 -6px; }
+  /* La respuesta se abre con su alto de verdad donde el navegador lo sabe
+     hacer; donde no, aparece de golpe. */
+  @supports (interpolate-size: allow-keywords) {
+    .lista { interpolate-size: allow-keywords; }
+
+    details::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition: block-size 0.35s var(--sale), content-visibility 0.35s allow-discrete;
+    }
+
+    details[open]::details-content { block-size: auto; }
   }
 
   @media (max-width: 860px) {
     .grid { grid-template-columns: 1fr; }
-    .cabecera { margin-bottom: 0; }
+    .cabecera { position: static; margin-bottom: 8px; }
+    summary { font-size: 1.02rem; padding-block: 20px; }
   }
 </style>

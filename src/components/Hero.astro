@@ -2,25 +2,56 @@
 import { Image } from 'astro:assets';
 import { img } from '../lib/img';
 import { cifras } from '../data/site';
+import Forma from './Forma.astro';
 import HeroNoche from './halloween/HeroNoche.astro';
+
+// El titular entra palabra por palabra. "brillantes" va subrayada a mano.
+const titular = ['Creando', 'mentes', 'brillantes,', 'hoy', 'y', 'siempre.'];
 ---
 
 <section class="hero">
   <HeroNoche />
+
   <div class="contenedor hero-grid">
     <div class="hero-texto">
-      <span class="etiqueta" data-aparece>Inscripciones abiertas · Inicio cada mes</span>
-      <h1 data-aparece style="--i: 1">Creando mentes <em>brillantes</em>, hoy y siempre.</h1>
-      <p class="hero-bajada" data-aparece style="--i: 2">
+      <h1 aria-label="Creando mentes brillantes, hoy y siempre.">
+        {
+          titular.map((palabra, i) => (
+            <>
+              <span class="palabra" style={`--i: ${i}`} aria-hidden="true">
+                {palabra === 'brillantes,' ? (
+                  <>
+                    <em>
+                      brillantes
+                      <svg class="trazo" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M4 13C52 5 96 16 148 9C200 3 246 15 296 7" pathLength="1" />
+                      </svg>
+                    </em>
+                    ,
+                  </>
+                ) : (
+                  palabra
+                )}
+              </span>{' '}
+            </>
+          ))
+        }
+      </h1>
+
+      <p class="hero-bajada">
         Clases de primaria y secundaria en grupos pequeños o particulares,
         virtuales o presenciales. Y una app donde cada avance se gana en
         monedas.
       </p>
-      <div class="hero-botones" data-aparece style="--i: 3">
-        <a href="#inscripcion" class="boton boton-rosa">Quiero inscribirme</a>
+
+      <div class="hero-botones">
+        <a href="#inscripcion" class="boton boton-campo">Quiero inscribirme</a>
         <a href="#descarga" class="boton boton-borde">Descargar la app</a>
       </div>
-      <dl class="hero-cifras" data-aparece style="--i: 4">
+
+      <p class="hero-aviso"><span class="punto" aria-hidden="true"></span>Inscripciones abiertas · Inicio cada mes</p>
+
+      <dl class="hero-cifras">
         {
           cifras.map((c) => (
             <div>
@@ -32,13 +63,28 @@ import HeroNoche from './halloween/HeroNoche.astro';
       </dl>
     </div>
 
-    <div class="hero-arte" aria-hidden="true" data-aparece="zoom" style="--i: 2">
-      <div class="hero-mancha"></div>
-      <Image class="hero-mascota" src={img('mascota')} alt="" width={720} loading="eager" />
-      <Image class="flota flota-1" src={img('avatar_circulo')} alt="" width={180} loading="eager" />
-      <Image class="flota flota-2" src={img('avatar_triangulo')} alt="" width={160} loading="eager" />
-      <Image class="flota flota-3" src={img('avatar_otorongo')} alt="" width={220} loading="eager" />
-      <span class="moneda-chip">+20 monedas</span>
+    <!-- La mascota sobre un disco, con las figuras de la marca alrededor. Las
+         capas se mueven un poco con el mouse, cada una a su profundidad. -->
+    <div class="hero-arte" aria-hidden="true" data-paralaje>
+      <div class="capa" data-fondo="0.012"><div class="hero-disco"></div></div>
+      <div class="capa" data-fondo="0.03"><Forma tipo="triangulo" class="forma forma-t" grosor={3} /></div>
+      <div class="capa" data-fondo="0.022"><Forma tipo="cuadrado" class="forma forma-c" grosor={3} /></div>
+
+      <div class="capa capa-mascota" data-fondo="0.02">
+        <Image class="hero-mascota" src={img('mascota')} alt="" width={720} loading="eager" />
+      </div>
+      <div class="capa" data-fondo="0.034">
+        <Image class="flota flota-1" src={img('avatar_circulo')} alt="" width={180} loading="eager" />
+      </div>
+      <div class="capa" data-fondo="0.028">
+        <Image class="flota flota-2" src={img('avatar_triangulo')} alt="" width={160} loading="eager" />
+      </div>
+      <div class="capa" data-fondo="0.04">
+        <Image class="flota flota-3" src={img('avatar_otorongo')} alt="" width={220} loading="eager" />
+      </div>
+      <div class="capa" data-fondo="0.046">
+        <span class="moneda-chip">+20 monedas</span>
+      </div>
     </div>
   </div>
 </section>
@@ -46,103 +92,216 @@ import HeroNoche from './halloween/HeroNoche.astro';
 <style>
   .hero {
     position: relative;
-    padding-block: clamp(40px, 7vw, 88px) clamp(56px, 8vw, 96px);
-    background: var(--garabatos), linear-gradient(180deg, #fff 0%, var(--fondo-2) 100%);
+    overflow: hidden;
+    padding-block: clamp(40px, 6vw, 76px) clamp(48px, 6.5vw, 84px);
+    color: var(--sobre-campo);
+    background:
+      var(--garabatos-claros),
+      radial-gradient(60% 80% at 82% 38%, var(--campo-luz) 0%, transparent 70%),
+      var(--campo);
   }
 
   .hero-grid {
+    position: relative;
+    z-index: 2;
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: 1.25fr 0.75fr;
     align-items: center;
-    gap: clamp(24px, 5vw, 64px);
+    gap: clamp(24px, 4vw, 48px);
   }
 
-  .hero-texto { display: grid; gap: 22px; justify-items: start; }
+  .hero-texto { display: grid; gap: 24px; justify-items: start; }
 
   h1 {
-    font-size: clamp(2.6rem, 6.4vw, 4.6rem);
+    font-size: clamp(2.7rem, 6.2vw, 5rem);
     font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 1.02;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
   }
 
-  h1 em {
-    font-style: normal;
-    color: var(--rosa);
-    background: linear-gradient(transparent 68%, var(--rosa-suave) 68%);
+  /* Cada palabra sube a su sitio, una detras de otra. La animacion solo
+     define de donde viene: sin ella, la palabra ya esta donde debe. */
+  .palabra { display: inline-block; }
+
+  :global(.anim) .palabra {
+    animation: subir 0.8s var(--sale) calc(var(--i) * 55ms) backwards;
+  }
+
+  @keyframes subir {
+    from { opacity: 0; translate: 0 0.42em; }
+  }
+
+  h1 em { position: relative; font-style: normal; white-space: nowrap; }
+
+  /* El subrayado se dibuja de izquierda a derecha cuando el titular ya llego. */
+  /* Va pegado a la linea de base: "brillantes" no tiene letras que bajen,
+     asi que el trazo cabe sin tocar el renglon de abajo. */
+  .trazo {
+    position: absolute;
+    left: -1%;
+    bottom: 0.19em;
+    width: 102%;
+    height: 0.15em;
+    overflow: visible;
+  }
+
+  .trazo path {
+    fill: none;
+    stroke: var(--resalte);
+    stroke-width: 6.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+  }
+
+  :global(.anim) .trazo path { animation: dibujar 0.7s var(--sale) 0.5s backwards; }
+
+  @keyframes dibujar {
+    from { stroke-dashoffset: 1; }
   }
 
   .hero-bajada {
-    max-width: 34rem;
-    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
-    color: var(--texto-suave);
+    max-width: 33rem;
+    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    font-weight: 500;
   }
 
-  .hero-botones { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
+  .hero-botones { display: flex; flex-wrap: wrap; gap: 14px; }
+
+  .hero .boton-borde { color: var(--sobre-campo); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero .boton-borde:hover {
+      background: var(--sobre-campo);
+      color: var(--boton-campo-texto);
+      box-shadow: inset 0 0 0 2px var(--sobre-campo);
+    }
+  }
+
+  .hero-aviso {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: -6px;
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .punto {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--resalte);
+  }
+
+  .punto::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--resalte);
+    animation: latir 2.2s var(--sale) infinite;
+  }
+
+  @keyframes latir {
+    from { scale: 1; opacity: 0.7; }
+    to { scale: 3; opacity: 0; }
+  }
 
   .hero-cifras {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px 36px;
-    margin: 12px 0 0;
+    gap: 14px 0;
+    margin: 6px 0 0;
     padding-top: 22px;
-    border-top: 1px solid var(--borde);
+    border-top: 1px solid var(--campo-linea);
   }
 
-  .hero-cifras div { display: flex; flex-direction: column-reverse; }
+  .hero-cifras div {
+    display: flex;
+    flex-direction: column-reverse;
+    /* Con la columna al reves, "flex-end" es arriba: la cifra queda a la
+       misma altura aunque el texto de abajo ocupe dos renglones. */
+    justify-content: flex-end;
+    padding-inline: clamp(16px, 2.4vw, 32px);
+    border-left: 1px solid var(--campo-linea);
+  }
+
+  .hero-cifras div:first-child { padding-left: 0; border-left: 0; }
+  .hero-cifras div:last-child { padding-right: 0; }
+
   .hero-cifras dd {
     margin: 0;
-    font-size: 1.9rem;
+    font-size: clamp(1.7rem, 2.6vw, 2.2rem);
     font-weight: 800;
     line-height: 1.1;
-    color: var(--tinta);
+    letter-spacing: -0.03em;
     font-variant-numeric: tabular-nums;
   }
-  .hero-cifras dt { font-size: 0.9rem; color: var(--texto-suave); }
+
+  .hero-cifras dt { font-size: 0.9rem; font-weight: 500; }
 
   .hero-arte {
     position: relative;
     display: grid;
     place-items: center;
-    min-height: 460px;
+    min-height: clamp(380px, 38vw, 500px);
   }
 
-  .hero-mancha {
-    position: absolute;
-    inset: 8% 4% 4%;
-    border-radius: 46% 54% 42% 58% / 52% 44% 56% 48%;
-    background: radial-gradient(circle at 35% 30%, #fff 0%, var(--rosa-suave) 55%, #FFD0E8 100%);
+  /* Cada capa ocupa todo el arte: asi el paralaje mueve la capa y lo de
+     dentro conserva su propia animacion. */
+  .capa { position: absolute; inset: 0; display: grid; place-items: center; }
+
+  .hero-disco {
+    width: min(108%, 470px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 0 clamp(14px, 2vw, 26px) rgba(255, 255, 255, 0.08);
+  }
+
+  .forma { position: absolute; color: rgba(255, 255, 255, 0.5); rotate: var(--giro); }
+  .forma-t { --giro: 16deg; width: 22%; right: -6%; top: 2%; animation: girar 46s linear infinite; }
+  .forma-c { --giro: -14deg; width: 17%; left: -8%; bottom: 20%; animation: girar 60s linear infinite reverse; }
+
+  @keyframes girar {
+    to { rotate: calc(var(--giro) + 360deg); }
   }
 
   .hero-mascota {
-    position: relative;
-    width: min(360px, 78%);
-    filter: drop-shadow(0 18px 24px rgba(26, 23, 48, 0.18));
+    width: min(350px, 82%);
+    filter: drop-shadow(0 22px 22px rgba(60, 0, 32, 0.35));
     animation: vaiven 6s ease-in-out infinite;
+  }
+
+  :global(.anim) .capa-mascota { animation: llegar 0.9s var(--rebote) 0.15s backwards; }
+
+  @keyframes llegar {
+    from { opacity: 0; scale: 0.9; translate: 0 26px; }
   }
 
   .flota {
     position: absolute;
-    filter: drop-shadow(0 10px 14px rgba(26, 23, 48, 0.2));
+    filter: drop-shadow(0 10px 12px rgba(60, 0, 32, 0.32));
     animation: flotar 5s ease-in-out infinite;
   }
 
-  .flota-1 { width: 84px; left: 2%; top: 14%; }
-  .flota-2 { width: 76px; right: 4%; top: 6%; animation-delay: -1.6s; }
-  .flota-3 { width: 104px; right: 0; bottom: 8%; animation-delay: -3.1s; }
+  .flota-1 { width: 20%; left: 0; top: 12%; }
+  .flota-2 { width: 18%; right: 2%; top: 4%; animation-delay: -1.6s; }
+  .flota-3 { width: 26%; right: -4%; bottom: 6%; animation-delay: -3.1s; }
 
   .moneda-chip {
     position: absolute;
-    left: 0;
-    bottom: 18%;
+    left: -4%;
+    bottom: 17%;
     padding: 10px 16px;
     border-radius: 999px;
     background: var(--tinta);
     color: #fff;
     font-weight: 700;
     font-size: 0.95rem;
-    box-shadow: 0 10px 24px rgba(26, 23, 48, 0.25);
-    transform: rotate(-6deg);
+    box-shadow: 0 10px 22px rgba(60, 0, 32, 0.3);
+    rotate: -6deg;
     animation: vaiven 4s ease-in-out -1s infinite;
   }
 
@@ -153,20 +312,31 @@ import HeroNoche from './halloween/HeroNoche.astro';
     height: 10px;
     margin-right: 8px;
     border-radius: 50%;
-    background: var(--oro);
+    background: var(--resalte);
     vertical-align: 1px;
   }
 
   @keyframes flotar {
-    0%, 100% { transform: translateY(0) rotate(-3deg); }
-    50% { transform: translateY(-14px) rotate(3deg); }
+    0%, 100% { translate: 0 0; rotate: -3deg; }
+    50% { translate: 0 -14px; rotate: 3deg; }
   }
 
   @media (max-width: 860px) {
     .hero-grid { grid-template-columns: 1fr; }
-    .hero-arte { min-height: 340px; max-width: 420px; width: 100%; justify-self: center; }
-    .flota-1 { width: 64px; }
-    .flota-2 { width: 58px; }
-    .flota-3 { width: 80px; }
+    .hero-arte { min-height: 340px; max-width: 400px; width: 100%; justify-self: center; }
+    .hero-disco { width: min(88%, 340px); }
+    .hero-mascota { width: min(270px, 68%); }
+    .forma-t { right: 2%; }
+    .forma-c { left: 0; }
+    .moneda-chip { left: 0; }
+    .flota-3 { right: 0; }
+  }
+
+  /* En el celular las tres cifras van en una sola fila, con el texto de
+     abajo en dos renglones si hace falta. */
+  @media (max-width: 520px) {
+    .hero-cifras { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; }
+    .hero-cifras div { padding-inline: 12px; }
+    .hero-cifras dt { font-size: 0.8rem; line-height: 1.3; }
   }
 </style>

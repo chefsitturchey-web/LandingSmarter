@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { img } from '../lib/img';
 import { academia, programas } from '../data/site';
+import Forma from './Forma.astro';
 import Hw from './halloween/Hw.astro';
 
 const anio = new Date().getFullYear();
@@ -19,6 +20,11 @@ const anio = new Date().getFullYear();
 
   <div class="contenedor">
     <div class="cierre" data-aparece>
+      <div class="cierre-figuras" aria-hidden="true">
+        <Forma tipo="circulo" class="cf cf-1" grosor={4} />
+        <Forma tipo="triangulo" class="cf cf-2" grosor={4} />
+        <Forma tipo="cuadrado" class="cf cf-3" grosor={4} />
+      </div>
       <h2>¿Listo para empezar?</h2>
       <p>Únete a la familia SMARTER y dale al alumno la mejor preparación.</p>
       <a href="/#inscripcion" class="boton boton-rosa">Quiero inscribirme</a>
@@ -47,7 +53,7 @@ const anio = new Date().getFullYear();
         </ul>
       </div>
 
-      <div>
+      <div class="contacto">
         <h3>Contacto</h3>
         <ul>
           <li><a href={`https://wa.me/${academia.whatsapp}`} target="_blank" rel="noopener">WhatsApp {academia.telefono}</a></li>
@@ -64,27 +70,41 @@ const anio = new Date().getFullYear();
 <style>
   .pie {
     padding-block: var(--seccion) 32px;
-    background: var(--tinta);
-    color: rgba(255, 255, 255, 0.72);
+    background: var(--garabatos-claros), var(--tinta);
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .cierre {
+    position: relative;
     display: grid;
     justify-items: center;
-    gap: 16px;
+    gap: 20px;
     padding-bottom: var(--seccion);
     text-align: center;
   }
 
-  .cierre h2 { color: #fff; }
-  .cierre p { font-size: 1.08rem; }
+  .cierre h2 {
+    color: #fff;
+    font-size: clamp(2.7rem, 8vw, 6rem);
+    letter-spacing: -0.04em;
+    line-height: 0.96;
+  }
+
+  .cierre p { max-width: 30rem; font-size: 1.15rem; }
+  .cierre .boton { margin-top: 8px; }
+
+  /* Las tres figuras, grandes y quietas, a los lados del cierre. */
+  .cf { position: absolute; color: var(--acento); }
+  .cf-1 { width: clamp(56px, 8vw, 112px); left: 0; top: -22%; }
+  .cf-2 { width: clamp(52px, 7vw, 98px); right: 1%; top: -26%; rotate: 14deg; }
+  .cf-3 { width: clamp(44px, 6vw, 84px); left: 9%; bottom: 30%; rotate: -12deg; color: #fff; opacity: 0.4; }
 
   .columnas {
     display: grid;
-    grid-template-columns: 1.4fr repeat(3, 1fr);
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.3fr);
     gap: 32px;
     padding-top: 48px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
 
   .marca { display: grid; gap: 16px; align-content: start; max-width: 280px; }
@@ -102,18 +122,24 @@ const anio = new Date().getFullYear();
 
   ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 0.93rem; }
 
-  a { text-decoration: none; }
-  a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  /* El correo es una sola palabra larga: se parte antes que empujar la
+     columna de al lado fuera de la pantalla. */
+  li { overflow-wrap: anywhere; }
+
+  a { text-decoration: none; transition: color 0.2s ease; }
+  a:hover { color: #fff; text-decoration: underline; }
 
   .legal {
     margin-top: 48px;
     padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
     font-size: 0.85rem;
   }
 
   @media (max-width: 860px) {
-    .columnas { grid-template-columns: 1fr 1fr; }
-    .marca { grid-column: 1 / -1; }
+    .columnas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .marca, .contacto { grid-column: 1 / -1; }
+    /* En el celular el titular ocupa todo el ancho: las figuras no caben. */
+    .cierre-figuras { display: none; }
   }
 </style>

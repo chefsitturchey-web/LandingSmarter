@@ -34,7 +34,7 @@ export const academia = {
  * `version` es lo que se muestra mientras la pagina consulta la de verdad. */
 export const app = {
   apk: '/descargar',
-  version: '1.0.1',
+  version: '1.0.3',
   requisito: 'Android 7 o superior',
 };
 

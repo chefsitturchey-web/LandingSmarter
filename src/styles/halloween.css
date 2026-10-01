@@ -16,65 +16,92 @@
 
 :root[data-temporada='halloween'] {
   --calabaza: #F2751A;
-  --calabaza-honda: #C85A0C;
+  --calabaza-honda: #A8480A;
   --calabaza-suave: #FFE9D4;
   --noche: #1B1030;
   --noche-2: #341A57;
 
-  /* El acento de la pagina pasa de rosa a calabaza: botones, etiquetas y
-     enlaces lo toman de estas tres, asi que cambian todos a la vez. El logo
-     sigue rosa: es la marca, no el disfraz. */
-  --rosa: var(--calabaza);
-  --rosa-hondo: var(--calabaza-honda);
-  --rosa-suave: var(--calabaza-suave);
+  /* El acento de la pagina pasa de rosa a calabaza: botones, enlaces y
+     figuras lo toman de aqui, asi que cambian todos a la vez. El logo sigue
+     rosa: es la marca, no el disfraz. Sobre naranja el texto va oscuro, que
+     el blanco no se lee. */
+  --acento: var(--calabaza);
+  --acento-fuerte: #B4500B;
+  --acento-hondo: var(--calabaza-honda);
+  --acento-suave: var(--calabaza-suave);
+  --sobre-acento: var(--noche);
+  --resalte: #FFB347;
+  --banda: #120A22;
+
+  /* El campo de color es naranja calabaza, con la letra de noche. La
+     portada es la excepcion: ahi el campo es el cielo (ver mas abajo). */
+  --campo: var(--calabaza);
+  --campo-luz: #FF9A3D;
+  --sobre-campo: var(--noche);
+  --campo-linea: rgba(27, 16, 48, 0.3);
+  --boton-campo: var(--noche);
+  --boton-campo-texto: #fff;
+  --boton-campo-canto: #05020C;
 
   /* Los garabatos de fondo: un murcielago, una calabaza y un fantasma. */
   --garabatos: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' fill='none' stroke='%237C5CFF' stroke-opacity='.11' stroke-width='3' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M30 48l6-9 5 8c7-2 14-7 19-14 2 10 8 16 14 19-7 1-11 6-12 12-4-4-9-5-13-2-3-4-7-4-10 0-2 5-5 9-7 12-2-3-5-7-7-12-3-4-7-4-10 0-4-3-9-2-13 2-1-6-5-11-12-12 6-3 12-9 14-19 5 7 12 12 19 14z' transform='translate(20 0)'/%3E%3Cellipse cx='178' cy='70' rx='26' ry='21'/%3E%3Cpath d='M178 49c0-7 3-11 8-14M166 66l5-7 4 7zM182 66l4-7 5 7zM163 77l7 6 5-4 5 5 5-5 6 5 6-6'/%3E%3Cpath d='M70 214v-36c0-28 46-28 46 0v36l-8-7-7 7-8-7-8 7-7-7z'/%3E%3Ccircle cx='85' cy='178' r='3.5'/%3E%3Ccircle cx='101' cy='178' r='3.5'/%3E%3C/svg%3E");
+  --garabatos-claros: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' fill='none' stroke='%23fff' stroke-opacity='.06' stroke-width='3' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M30 48l6-9 5 8c7-2 14-7 19-14 2 10 8 16 14 19-7 1-11 6-12 12-4-4-9-5-13-2-3-4-7-4-10 0-2 5-5 9-7 12-2-3-5-7-7-12-3-4-7-4-10 0-4-3-9-2-13 2-1-6-5-11-12-12 6-3 12-9 14-19 5 7 12 12 19 14z' transform='translate(20 0)'/%3E%3Cellipse cx='178' cy='70' rx='26' ry='21'/%3E%3Cpath d='M178 49c0-7 3-11 8-14M166 66l5-7 4 7zM182 66l4-7 5 7zM163 77l7 6 5-4 5 5 5-5 6 5 6-6'/%3E%3Cpath d='M70 214v-36c0-28 46-28 46 0v36l-8-7-7 7-8-7-8 7-7-7z'/%3E%3Ccircle cx='85' cy='178' r='3.5'/%3E%3Ccircle cx='101' cy='178' r='3.5'/%3E%3C/svg%3E");
+  --garabatos-noche: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' fill='none' stroke='%231B1030' stroke-opacity='.1' stroke-width='3' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M30 48l6-9 5 8c7-2 14-7 19-14 2 10 8 16 14 19-7 1-11 6-12 12-4-4-9-5-13-2-3-4-7-4-10 0-2 5-5 9-7 12-2-3-5-7-7-12-3-4-7-4-10 0-4-3-9-2-13 2-1-6-5-11-12-12 6-3 12-9 14-19 5 7 12 12 19 14z' transform='translate(20 0)'/%3E%3Cellipse cx='178' cy='70' rx='26' ry='21'/%3E%3Cpath d='M178 49c0-7 3-11 8-14M166 66l5-7 4 7zM182 66l4-7 5 7zM163 77l7 6 5-4 5 5 5-5 6 5 6-6'/%3E%3Cpath d='M70 214v-36c0-28 46-28 46 0v36l-8-7-7 7-8-7-8 7-7-7z'/%3E%3Ccircle cx='85' cy='178' r='3.5'/%3E%3Ccircle cx='101' cy='178' r='3.5'/%3E%3C/svg%3E");
 }
 
 :root[data-temporada='halloween'] .hw { display: block; }
 
-:root[data-temporada='halloween'] :focus-visible { outline-color: var(--calabaza); }
+:root[data-temporada='halloween'] ::selection { background: var(--calabaza); color: var(--noche); }
+
+:root[data-temporada='halloween'] .boton-rosa { background: var(--calabaza); }
+
+/* Sobre tinta, el boton claro pasa a calabaza. */
+:root[data-temporada='halloween'] .estrella {
+  --boton-campo: var(--calabaza);
+  --boton-campo-texto: var(--noche);
+  --boton-campo-canto: var(--calabaza-honda);
+}
+
+:root[data-temporada='halloween'] .descarga {
+  background:
+    var(--garabatos-noche),
+    radial-gradient(50% 70% at 84% 22%, var(--campo-luz) 0%, transparent 70%),
+    var(--campo);
+}
 
 /* --- La portada: una noche ---------------------------------------------------- */
 
 :root[data-temporada='halloween'] .hero {
-  overflow: hidden;
+  --sobre-campo: #fff;
+  --campo-linea: rgba(255, 255, 255, 0.22);
+  --boton-campo: var(--calabaza);
+  --boton-campo-texto: var(--noche);
+  --boton-campo-canto: var(--calabaza-honda);
+
   padding-bottom: clamp(150px, 17vw, 230px);
-  color: #fff;
   background:
     radial-gradient(120% 70% at 78% 108%, rgba(242, 117, 26, 0.42) 0%, transparent 62%),
     linear-gradient(180deg, var(--noche) 0%, #2A1548 52%, #4A2371 100%);
 }
 
-:root[data-temporada='halloween'] .hero .hero-grid { position: relative; z-index: 2; }
+:root[data-temporada='halloween'] .hero h1 em { color: var(--calabaza); }
 
-:root[data-temporada='halloween'] .hero h1 { color: #fff; }
-
-:root[data-temporada='halloween'] .hero h1 em {
-  color: var(--calabaza);
-  background: linear-gradient(transparent 68%, rgba(242, 117, 26, 0.24) 68%);
+/* El disco de detras de la mascota es la luna llena: la mascota, de negro,
+   queda recortada contra ella. */
+:root[data-temporada='halloween'] .hero .hero-disco {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(190, 140, 50, 0.34) 0 6.5%, transparent 7%),
+    radial-gradient(circle at 67% 20%, rgba(190, 140, 50, 0.26) 0 4%, transparent 4.5%),
+    radial-gradient(circle at 76% 64%, rgba(190, 140, 50, 0.3) 0 8.5%, transparent 9%),
+    radial-gradient(circle at 22% 72%, rgba(190, 140, 50, 0.24) 0 5%, transparent 5.5%),
+    radial-gradient(circle at 38% 32%, #FFF4C8 0%, #FFDA7C 56%, #F3B74A 100%);
+  box-shadow:
+    0 0 0 clamp(14px, 2vw, 26px) rgba(255, 218, 124, 0.1),
+    0 0 110px 26px rgba(255, 205, 110, 0.36);
+  animation: hw-resplandor 5s ease-in-out infinite;
 }
 
-:root[data-temporada='halloween'] .hero .etiqueta { color: #FFB877; }
-:root[data-temporada='halloween'] .hero .hero-bajada { color: rgba(255, 255, 255, 0.84); }
-
-:root[data-temporada='halloween'] .hero .hero-cifras { border-top-color: rgba(255, 255, 255, 0.2); }
-:root[data-temporada='halloween'] .hero .hero-cifras dd { color: #fff; }
-:root[data-temporada='halloween'] .hero .hero-cifras dt { color: rgba(255, 255, 255, 0.72); }
-
-:root[data-temporada='halloween'] .hero .boton-borde {
-  background: transparent;
-  color: #fff;
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85);
-}
-
-:root[data-temporada='halloween'] .hero .boton-borde:hover { background: #fff; color: var(--noche); }
-
-/* La mancha detras de la mascota pasa a ser el resplandor de la luna. */
-:root[data-temporada='halloween'] .hero .hero-mancha {
-  background: radial-gradient(circle at 50% 44%, rgba(255, 214, 140, 0.3) 0%, rgba(140, 100, 255, 0.2) 48%, transparent 72%);
-}
+:root[data-temporada='halloween'] .hero .forma { display: none; }
 
 :root[data-temporada='halloween'] .hero .moneda-chip { background: #fff; color: var(--tinta); }
 
@@ -111,15 +138,6 @@
   background-position: 130px 60px;
   opacity: 0.5;
   animation-delay: -2.2s;
-}
-
-.hw-luna {
-  position: absolute;
-  top: clamp(18px, 4vw, 54px);
-  left: 54%;
-  width: clamp(92px, 12vw, 168px);
-  filter: drop-shadow(0 0 34px rgba(255, 214, 120, 0.65));
-  animation: hw-resplandor 5s ease-in-out infinite;
 }
 
 /* Los murcielagos cruzan la portada de lado a lado, cada uno a su altura y a
@@ -239,24 +257,6 @@
 
 /* --- El resto de la pagina ------------------------------------------------------- */
 
-/* Una calabaza delante de cada etiqueta de seccion. */
-:root[data-temporada='halloween'] .seccion .etiqueta::before {
-  content: '';
-  display: inline-block;
-  width: 1.5em;
-  height: 1.5em;
-  margin-right: 0.45em;
-  vertical-align: -0.38em;
-  background: url('/halloween/jack_o_lantern.webp') center / contain no-repeat;
-}
-
-/* Las tarjetas se levantan con un resplandor de calabaza. */
-@media (hover: hover) {
-  :root[data-temporada='halloween'] .levanta:hover {
-    box-shadow: 0 18px 40px rgba(242, 117, 26, 0.22);
-  }
-}
-
 /* Un cuarto de telarana en la esquina de las secciones oscuras: la imagen va
    al doble de tamano y se ensena solo el cuadrante que cuelga hacia adentro. */
 :root[data-temporada='halloween'] .seccion.app,
@@ -352,10 +352,6 @@
 /* --- Celular ------------------------------------------------------------------------- */
 
 @media (max-width: 860px) {
-  /* La luna va en una franja de cielo propia, encima del texto: al lado no
-     cabe sin tapar la etiqueta. */
-  :root[data-temporada='halloween'] .hero { padding-top: 96px; }
-  .hw-luna { left: auto; right: 9%; top: 16px; width: 68px; }
   .hw-murcielago.m3, .hw-murcielago.m4 { display: none; }
   .hw-fantasma { left: 4%; }
   .hw-gato { display: none; }
@@ -385,8 +381,8 @@
 }
 
 @keyframes hw-resplandor {
-  0%, 100% { filter: drop-shadow(0 0 30px rgba(255, 214, 120, 0.6)); }
-  50% { filter: drop-shadow(0 0 48px rgba(255, 214, 120, 0.9)); }
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.07); }
 }
 
 @keyframes hw-cruzar {

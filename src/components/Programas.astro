@@ -1,11 +1,15 @@
 ---
+import { Image } from 'astro:assets';
+import { img } from '../lib/img';
 import { programas } from '../data/site';
+
+const estrella = programas.find((p) => p.destacado);
+const resto = programas.filter((p) => !p.destacado);
 ---
 
 <section class="seccion programas" id="programas">
   <div class="contenedor">
     <div class="cabecera" data-aparece>
-      <span class="etiqueta">Programas</span>
       <h2>Uno para cada momento del año</h2>
       <p>
         Nuestros docentes evalúan al alumno y te recomiendan el programa que le
@@ -13,26 +17,47 @@ import { programas } from '../data/site';
       </p>
     </div>
 
-    <ul class="lista">
+    <div class="reparto">
       {
-        programas.map((p, i) => (
-          <li class:list={['programa', 'levanta', { estrella: p.destacado }]} data-aparece style={`--i: ${i % 3}`}>
-            {p.destacado && <span class="sello">{p.destacado}</span>}
-            <span class="para">{p.para}</span>
-            <h3>{p.nombre}</h3>
-            <p>{p.texto}</p>
-            <a href="#inscripcion" class="consultar" data-programa={p.nombre}>
-              Consultar este programa <span aria-hidden="true">→</span>
+        estrella && (
+          <article class="estrella" data-aparece>
+            <span class="sello">{estrella.destacado}</span>
+            <p class="para">{estrella.para}</p>
+            <h3>{estrella.nombre}</h3>
+            <p class="estrella-texto">{estrella.texto}</p>
+            <a href="#inscripcion" class="boton boton-campo" data-programa={estrella.nombre}>
+              Consultar este programa
             </a>
-          </li>
-        ))
+            <Image class="estrella-arte" src={img('boss160mitad')} alt="" width={720} />
+          </article>
+        )
       }
-    </ul>
+
+      <ul class="filas">
+        {
+          resto.map((p, i) => (
+            <li class="fila" data-aparece style={`--i: ${i}`}>
+              <div class="fila-nombre">
+                <h3>{p.nombre}</h3>
+                <p class="para">{p.para}</p>
+              </div>
+              <p class="fila-texto">{p.texto}</p>
+              <a href="#inscripcion" class="consultar" data-programa={p.nombre}>
+                Consultar<span class="solo-lectores"> {p.nombre}</span>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 </section>
 
 <script>
-  // "Consultar este programa" deja el programa ya elegido en el formulario.
+  // "Consultar" deja el programa ya elegido en el formulario.
   for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-programa]')) {
     a.addEventListener('click', () => {
       const campo = document.querySelector<HTMLSelectElement>('#f-programa');
@@ -44,74 +69,107 @@ import { programas } from '../data/site';
 <style>
   .programas { background: var(--fondo-2); }
 
-  .lista {
+  .reparto {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    grid-template-columns: 5fr 7fr;
+    align-items: start;
+    gap: clamp(24px, 4vw, 56px);
   }
 
-  .programa {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 28px;
-    border-radius: var(--radio);
-    background: var(--fondo);
-    border: 1px solid var(--borde);
-  }
-
-  .para {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--morado);
-  }
-
-  .programa p { color: var(--texto-suave); font-size: 0.97rem; flex: 1; }
-
-  .consultar {
-    margin-top: 8px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--rosa);
-    text-decoration: none;
-  }
-
-  .consultar span { display: inline-block; transition: translate .2s ease; }
-  .programa:hover .consultar span { translate: 4px 0; }
-
+  /* El programa estrella: una pieza sola, en tinta, con el VIP del Banco. */
   .estrella {
-    background: linear-gradient(150deg, var(--tinta) 0%, var(--tinta-2) 100%);
-    border-color: transparent;
+    --boton-campo-canto: #A9A3C4;
+    position: sticky;
+    top: 100px;
+    display: grid;
+    justify-items: start;
+    gap: 14px;
+    min-height: 580px;
+    padding: clamp(28px, 3.4vw, 44px);
+    overflow: hidden;
+    border-radius: var(--radio-grande);
+    background: var(--garabatos-claros), var(--tinta);
     color: #fff;
+    align-content: start;
   }
-
-  .estrella .para { color: #C9BBFF; }
-  .estrella p { color: rgba(255, 255, 255, 0.78); }
-  .estrella .consultar { color: #FF7DBE; }
 
   .sello {
-    position: absolute;
-    top: -12px;
-    right: 20px;
-    padding: 4px 12px;
-    border-radius: 999px;
-    background: var(--oro);
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: var(--resalte);
     color: var(--tinta);
     font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .estrella .para { margin-top: 10px; color: var(--resalte); font-weight: 600; }
+  .estrella h3 { font-size: clamp(2rem, 3.4vw, 2.7rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1; }
+  .estrella-texto { max-width: 22rem; color: rgba(255, 255, 255, 0.86); }
+  .estrella .boton { position: relative; z-index: 1; margin-top: 10px; }
+
+  .estrella-arte {
+    position: absolute;
+    right: -12%;
+    bottom: -26%;
+    width: 74%;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.45));
+    transition: translate 0.5s var(--sale), rotate 0.5s var(--sale);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .estrella:hover .estrella-arte { translate: -8px -10px; rotate: -2deg; }
+  }
+
+  /* Los demas: una lista, no cinco tarjetas iguales. */
+  .filas { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--tinta); }
+
+  .fila {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr) auto;
+    align-items: center;
+    gap: 8px 28px;
+    padding: 26px 18px;
+    border-bottom: 1px solid var(--borde);
+    transition: opacity 0.6s var(--sale) calc(var(--i, 0) * 60ms), transform 0.6s var(--sale) calc(var(--i, 0) * 60ms), background-color 0.2s ease;
+  }
+
+  .fila-nombre { display: grid; gap: 4px; }
+  .fila h3 { font-size: 1.32rem; }
+  .para { font-size: 0.88rem; font-weight: 600; color: var(--acento-fuerte); }
+  .fila-texto { color: var(--texto-suave); font-size: 0.95rem; }
+
+  .consultar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+
+  /* Toda la fila lleva al formulario, no solo la palabra. */
+  .consultar::after { content: ''; position: absolute; inset: 0; }
+
+  .consultar svg { transition: translate 0.2s var(--sale); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .fila:hover { background: var(--fondo); }
+    .fila:hover .consultar { color: var(--acento-fuerte); }
+    .fila:hover .consultar svg { translate: 5px 0; }
   }
 
   @media (max-width: 960px) {
-    .lista { grid-template-columns: repeat(2, 1fr); }
+    .reparto { grid-template-columns: 1fr; }
+    .estrella { position: relative; top: auto; min-height: 0; padding-bottom: 170px; }
+    .estrella-arte { width: 250px; right: -34px; bottom: -92px; }
   }
 
-  @media (max-width: 600px) {
-    .lista { grid-template-columns: 1fr; }
-    .programa { padding: 24px; }
+  @media (max-width: 640px) {
+    .fila { grid-template-columns: 1fr; padding: 22px 4px; }
+    .fila h3 { font-size: 1.2rem; }
+    .consultar { margin-top: 4px; color: var(--acento-fuerte); }
   }
 </style>
