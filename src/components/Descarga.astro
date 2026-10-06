@@ -50,9 +50,9 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
           </ol>
           <a class="boton boton-campo" href={app.web}>Abrir SMARTER en el navegador</a>
         </div>
-        <!-- En la computadora el APK no se instala: va primero la version web.
+        <!-- En una Mac el APK no sirve de nada: va primero la version web.
              Para el celular Android queda el QR de al lado. -->
-        <div class="en-compu" hidden>
+        <div class="en-mac" hidden>
           <a class="boton boton-campo" href={app.web}>Abrir SMARTER en el navegador</a>
           <p>
             Para tenerla como una app: en Safari, menú <strong>Archivo › Agregar al
@@ -96,14 +96,14 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
 </section>
 
 <script>
-  // El APK solo sirve en un celular Android. En un iPhone el boton bajaria un
-  // archivo que no se puede abrir, y en la computadora tampoco se instala: a
-  // los dos se les ofrece primero la version web. Los iPad nuevos dicen ser
-  // una Mac, pero son los unicos "Mac" con pantalla tactil.
+  // En los aparatos de Apple el APK no sirve: a un iPhone o una Mac se les
+  // ofrece la version web en su lugar (igual que hace /descargar en el
+  // Worker). Android y las demas computadoras ven la descarga de siempre. Los
+  // iPad nuevos dicen ser una Mac, pero son los unicos "Mac" con pantalla
+  // tactil.
   const ua = navigator.userAgent;
-  const esIos =
-    /iPhone|iPad|iPod/.test(ua) || (ua.includes('Macintosh') && navigator.maxTouchPoints > 1);
-  const esAndroid = /Android/.test(ua);
+  const esMac = ua.includes('Macintosh');
+  const esIos = /iPhone|iPad|iPod/.test(ua) || (esMac && navigator.maxTouchPoints > 1);
   const descarga = document.querySelector('.descarga');
   if (esIos) {
     // Lo del APK no le sirve: fuera el boton, los pasos para instalarlo y el
@@ -111,11 +111,11 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
     descarga?.classList.add('es-ios');
     document.querySelector('.aviso-iphone')?.removeAttribute('hidden');
     document.querySelector('.otra-forma')?.setAttribute('hidden', '');
-  } else if (!esAndroid) {
-    // Computadora: la web adelante; el QR y los pasos siguen para quien
-    // quiera instalarla en su Android.
-    descarga?.classList.add('es-compu');
-    document.querySelector('.en-compu')?.removeAttribute('hidden');
+  } else if (esMac) {
+    // Mac: la web adelante; el QR y los pasos siguen para quien quiera
+    // instalarla en su Android.
+    descarga?.classList.add('es-mac');
+    document.querySelector('.en-mac')?.removeAttribute('hidden');
     document.querySelector('.otra-forma')?.setAttribute('hidden', '');
   }
 
@@ -196,11 +196,11 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
   .es-ios .qr-zona { display: none; }
   .es-ios .arriba { grid-template-columns: 1fr; }
 
-  .es-compu .acciones { display: none; }
+  .es-mac .acciones { display: none; }
 
-  .en-compu { display: grid; gap: 14px; justify-items: start; max-width: 30rem; margin-top: 4px; }
-  .en-compu[hidden] { display: none; }
-  .en-compu p { font-size: 0.93rem; font-weight: 500; }
+  .en-mac { display: grid; gap: 14px; justify-items: start; max-width: 30rem; margin-top: 4px; }
+  .en-mac[hidden] { display: none; }
+  .en-mac p { font-size: 0.93rem; font-weight: 500; }
 
   .otra-forma { font-size: 0.93rem; font-weight: 500; }
   .otra-forma a { font-weight: 700; }
