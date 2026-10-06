@@ -25,7 +25,8 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
         <h2>Descarga la app</h2>
         <p class="bajada">
           Horario, asistencia, notas, pagos y el Banco SMARTER, en el celular.
-          Por ahora está para Android.
+          <span class="solo-android">En Android se instala; en iPhone y en la
+          computadora, se usa desde el navegador.</span>
         </p>
 
         <div class="acciones">
@@ -38,8 +39,20 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
           <span class="requisito">Versión <span data-version>{app.version}</span> · {app.requisito}</span>
         </div>
 
-        <p class="aviso-iphone" hidden>
-          Estás en un iPhone: la app todavía no está para iOS. Muy pronto.
+        <!-- En un iPhone el APK no sirve: se ofrece la version web, con los
+             tres toques para dejarla en la pantalla de inicio. -->
+        <div class="aviso-iphone" hidden>
+          <p class="aviso-titulo">¿Tienes iPhone? Úsala desde Safari</p>
+          <ol>
+            <li>Abre la versión web.</li>
+            <li>Toca <strong>Compartir</strong> (el cuadrado con la flecha).</li>
+            <li>Elige <strong>Agregar a inicio</strong>.</li>
+          </ol>
+          <a class="boton boton-campo" href={app.web}>Abrir SMARTER en el navegador</a>
+        </div>
+        <p class="otra-forma">
+          ¿En la computadora o en un iPhone?{' '}
+          <a href={app.web}>Úsala desde el navegador</a>.
         </p>
       </div>
 
@@ -73,9 +86,18 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
 </section>
 
 <script>
-  // En un iPhone el boton bajaria un archivo que no se puede abrir: se avisa.
-  if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+  // En un iPhone el boton bajaria un archivo que no se puede abrir: se ofrece
+  // la version web en su lugar. Los iPad nuevos dicen ser una Mac, pero son
+  // los unicos "Mac" con pantalla tactil.
+  const esIos =
+    /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+    (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
+  if (esIos) {
+    // Lo del APK no le sirve: fuera el boton, los pasos para instalarlo y el
+    // texto que habla de Android. Queda solo el camino del iPhone.
+    document.querySelector('.descarga')?.classList.add('es-ios');
     document.querySelector('.aviso-iphone')?.removeAttribute('hidden');
+    document.querySelector('.otra-forma')?.setAttribute('hidden', '');
   }
 
   // La version que se baja de verdad. Si no responde, queda la del sitio.
@@ -115,13 +137,45 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
   .requisito { font-size: 0.9rem; font-weight: 500; }
 
   .aviso-iphone {
-    padding: 12px 16px;
-    border-radius: 12px;
+    display: grid;
+    gap: 10px;
+    justify-items: start;
+    max-width: 30rem;
+    padding: 18px 20px;
+    border-radius: 16px;
     background: #fff;
     color: var(--tinta);
-    font-weight: 600;
-    font-size: 0.93rem;
+    font-size: 0.95rem;
   }
+
+  .aviso-iphone[hidden] { display: none; }
+
+  .aviso-titulo { font-weight: 700; font-size: 1.02rem; }
+
+  .aviso-iphone ol {
+    margin: 0;
+    padding-left: 1.2em;
+    display: grid;
+    gap: 2px;
+    font-weight: 500;
+  }
+
+  /* Aqui el boton va sobre blanco, no sobre el campo de color. */
+  .aviso-iphone .boton-campo {
+    margin-top: 4px;
+    background: var(--acento-fuerte);
+    color: var(--sobre-acento);
+    box-shadow: 0 5px 0 var(--acento-hondo);
+  }
+
+  .es-ios .acciones,
+  .es-ios .instalar,
+  .es-ios .solo-android,
+  .es-ios .qr-zona { display: none; }
+  .es-ios .arriba { grid-template-columns: 1fr; }
+
+  .otra-forma { font-size: 0.93rem; font-weight: 500; }
+  .otra-forma a { font-weight: 700; }
 
   .qr-zona { position: relative; justify-self: center; padding-top: 96px; }
 

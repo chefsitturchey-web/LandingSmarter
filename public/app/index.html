@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!--
+    La app web vive en una subcarpeta de la landing (/app/). La ruta la pone
+    `flutter build web --base-href /app/`; ver tool/web/publicar_web.ps1.
+  -->
+  <base href="/app/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="La app de la Academia SMARTER: asistencia, monedas, comportamiento, pagos y juegos.">
+
+  <!--
+    Instalada en el iPhone ("Agregar a pantalla de inicio") se abre a pantalla
+    completa, sin la barra de Safari, con este nombre debajo del icono.
+
+    La barra de estado en "default" (clara, con el texto oscuro) y no en
+    "black-translucent": con esa, la hora y la bateria quedarian encima de la
+    cabecera de la app. Asi el sistema le deja su franja propia.
+  -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SMARTER">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>SMARTER</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #FFFFFF;
+      /* La app dibuja su propia respuesta al toque: sin el destello gris de
+         Safari encima. */
+      -webkit-tap-highlight-color: transparent;
+      /* Sin el rebote de toda la pagina al llegar arriba: las listas de la
+         app ya rebotan solas. */
+      overscroll-behavior: none;
+    }
+
+    /* Lo que se ve mientras la app arranca, que en un iPhone tarda un par de
+       segundos la primera vez. Se quita en cuanto la app pinta. */
+    #arranque {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      background: #FFFFFF;
+      transition: opacity 200ms ease-out;
+    }
+
+    #arranque img {
+      width: 96px;
+      height: 96px;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(254, 0, 129, 0.25);
+    }
+
+    #arranque .punto {
+      width: 28px;
+      height: 28px;
+      border: 3px solid #F3D1E4;
+      border-top-color: #FE0081;
+      border-radius: 50%;
+      animation: girar 800ms linear infinite;
+    }
+
+    #arranque.listo {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Si la app no llega a pintar (sin senal, o algo fallo al arrancar), se
+       dice y se ofrece reintentar en vez de girar para siempre. */
+    #arranque .demora {
+      display: none;
+      max-width: 260px;
+      margin: 0;
+      text-align: center;
+      font: 500 15px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #4A4458;
+    }
+
+    #arranque button {
+      display: none;
+      padding: 12px 28px;
+      border: 0;
+      border-radius: 999px;
+      background: #FE0081;
+      color: #FFFFFF;
+      font: 600 16px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      touch-action: manipulation;
+    }
+
+    #arranque.demorado .demora,
+    #arranque.demorado button { display: block; }
+
+    @keyframes girar {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #arranque .punto { animation-duration: 2400ms; }
+    }
+  </style>
+</head>
+<body>
+  <div id="arranque" aria-label="Cargando SMARTER" role="status">
+    <img src="icons/Icon-192.png" alt="">
+    <div class="punto"></div>
+    <p class="demora">Está tardando más de lo normal. Revisa tu conexión a internet.</p>
+    <button type="button" onclick="location.reload()">Reintentar</button>
+  </div>
+
+  <script>
+    // La app avisa cuando pinta su primera pantalla; recien ahi se quita la
+    // de carga, para que no haya un instante en blanco entre una y otra.
+    var pinto = false;
+    window.addEventListener('flutter-first-frame', function () {
+      pinto = true;
+      var arranque = document.getElementById('arranque');
+      if (!arranque) return;
+      arranque.classList.add('listo');
+      setTimeout(function () { arranque.remove(); }, 250);
+    });
+
+    // Con senal lenta la primera vez puede tardar; pasado este tiempo, o si
+    // el archivo de la app ni siquiera bajo, se ofrece reintentar. La carga
+    // sigue por detras: si termina, la app aparece igual.
+    function demorado() {
+      var arranque = document.getElementById('arranque');
+      if (!pinto && arranque) arranque.classList.add('demorado');
+    }
+    setTimeout(demorado, 20000);
+  </script>
+  <script src="flutter_bootstrap.js" async onerror="demorado()"></script>
+</body>
+</html>

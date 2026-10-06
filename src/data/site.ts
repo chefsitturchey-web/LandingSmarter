@@ -34,8 +34,11 @@ export const academia = {
  * `version` es lo que se muestra mientras la pagina consulta la de verdad. */
 export const app = {
   apk: '/descargar',
-  version: '1.0.3',
+  version: '1.0.5',
   requisito: 'Android 7 o superior',
+  // La misma app, en el navegador. En el iPhone se agrega a la pantalla de
+  // inicio y queda con su icono, como una app.
+  web: '/app/',
 };
 
 // EJEMPLO
@@ -204,7 +207,7 @@ export const preguntas = [
   },
   {
     p: '¿La app está para iPhone?',
-    r: 'Por ahora solo para Android. La versión para iPhone está en camino.',
+    r: 'Sí, desde Safari: entra a la versión web, toca Compartir y luego "Agregar a inicio". Queda con su ícono en la pantalla de inicio, como una app. La versión del App Store está en camino.',
   },
   {
     p: '¿Por qué Android me avisa al instalarla?',
