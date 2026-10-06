@@ -24,7 +24,7 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
       <div class="texto" data-aparece>
         <h2>Descarga la app</h2>
         <p class="bajada">
-          Horario, asistencia, notas, pagos y el Banco SMARTER, en el celular.
+          Horario, asistencia, notas, pagos y el Banco SMARTER, en el celular.{' '}
           <span class="solo-android">En Android se instala; en iPhone y en la
           computadora, se usa desde el navegador.</span>
         </p>
@@ -49,6 +49,16 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
             <li>Elige <strong>Agregar a inicio</strong>.</li>
           </ol>
           <a class="boton boton-campo" href={app.web}>Abrir SMARTER en el navegador</a>
+        </div>
+        <!-- En la computadora el APK no se instala: va primero la version web.
+             Para el celular Android queda el QR de al lado. -->
+        <div class="en-compu" hidden>
+          <a class="boton boton-campo" href={app.web}>Abrir SMARTER en el navegador</a>
+          <p>
+            Para tenerla como una app: en Safari, menú <strong>Archivo › Agregar al
+            Dock</strong>; en Chrome o Edge, el ícono de instalar en la barra de
+            direcciones.
+          </p>
         </div>
         <p class="otra-forma">
           ¿En la computadora o en un iPhone?{' '}
@@ -86,17 +96,26 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
 </section>
 
 <script>
-  // En un iPhone el boton bajaria un archivo que no se puede abrir: se ofrece
-  // la version web en su lugar. Los iPad nuevos dicen ser una Mac, pero son
-  // los unicos "Mac" con pantalla tactil.
+  // El APK solo sirve en un celular Android. En un iPhone el boton bajaria un
+  // archivo que no se puede abrir, y en la computadora tampoco se instala: a
+  // los dos se les ofrece primero la version web. Los iPad nuevos dicen ser
+  // una Mac, pero son los unicos "Mac" con pantalla tactil.
+  const ua = navigator.userAgent;
   const esIos =
-    /iPhone|iPad|iPod/.test(navigator.userAgent) ||
-    (navigator.userAgent.includes('Macintosh') && navigator.maxTouchPoints > 1);
+    /iPhone|iPad|iPod/.test(ua) || (ua.includes('Macintosh') && navigator.maxTouchPoints > 1);
+  const esAndroid = /Android/.test(ua);
+  const descarga = document.querySelector('.descarga');
   if (esIos) {
     // Lo del APK no le sirve: fuera el boton, los pasos para instalarlo y el
     // texto que habla de Android. Queda solo el camino del iPhone.
-    document.querySelector('.descarga')?.classList.add('es-ios');
+    descarga?.classList.add('es-ios');
     document.querySelector('.aviso-iphone')?.removeAttribute('hidden');
+    document.querySelector('.otra-forma')?.setAttribute('hidden', '');
+  } else if (!esAndroid) {
+    // Computadora: la web adelante; el QR y los pasos siguen para quien
+    // quiera instalarla en su Android.
+    descarga?.classList.add('es-compu');
+    document.querySelector('.en-compu')?.removeAttribute('hidden');
     document.querySelector('.otra-forma')?.setAttribute('hidden', '');
   }
 
@@ -160,19 +179,28 @@ const pedirCuenta = `https://wa.me/${academia.whatsapp}?text=${encodeURIComponen
     font-weight: 500;
   }
 
-  /* Aqui el boton va sobre blanco, no sobre el campo de color. */
+  /* Aqui el boton va sobre blanco, no sobre el campo de color: tinta con
+     letra blanca, que se lee igual con los colores de cualquier temporada. */
   .aviso-iphone .boton-campo {
     margin-top: 4px;
-    background: var(--acento-fuerte);
-    color: var(--sobre-acento);
-    box-shadow: 0 5px 0 var(--acento-hondo);
+    background: var(--tinta);
+    color: #fff;
+    box-shadow: 0 5px 0 #000;
   }
+
+  .aviso-iphone .boton-campo:active { box-shadow: 0 1px 0 #000; }
 
   .es-ios .acciones,
   .es-ios .instalar,
   .es-ios .solo-android,
   .es-ios .qr-zona { display: none; }
   .es-ios .arriba { grid-template-columns: 1fr; }
+
+  .es-compu .acciones { display: none; }
+
+  .en-compu { display: grid; gap: 14px; justify-items: start; max-width: 30rem; margin-top: 4px; }
+  .en-compu[hidden] { display: none; }
+  .en-compu p { font-size: 0.93rem; font-weight: 500; }
 
   .otra-forma { font-size: 0.93rem; font-weight: 500; }
   .otra-forma a { font-weight: 700; }

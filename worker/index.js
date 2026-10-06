@@ -6,6 +6,10 @@
 // ahi: publicar una version nueva en la app (subir el APK a R2 y marcarla como
 // publicada) cambia lo que se baja sin tocar esta web ni reimprimir el QR.
 //
+// En un iPhone, iPad o Mac el APK no se puede abrir: ahi `/descargar` lleva a
+// la version web de la app. Asi se comparte un solo enlace con todas las
+// familias y a cada una le abre lo que le sirve.
+//
 // La clave de Supabase es la publica (la misma que lleva la app) y solo puede
 // leer versiones ya publicadas.
 
@@ -19,6 +23,13 @@ const RESPALDO = {
   build: 2,
   apk: 'https://pub-3bc0ccae21bd406a96879cd03f9774ac.r2.dev/smarter-1.0.1-2.apk',
 };
+
+const APP_WEB = '/app/';
+
+// Los iPad nuevos dicen ser una Mac: tambien caen aqui, que es lo correcto.
+function esApple(request) {
+  return /iPhone|iPad|iPod|Macintosh/.test(request.headers.get('User-Agent') ?? '');
+}
 
 async function ultimaVersion() {
   const url =
@@ -47,10 +58,15 @@ export default {
     const { pathname } = new URL(request.url);
 
     if (pathname === '/descargar' || pathname === '/descargar/') {
-      const { apk } = await ultimaVersion();
+      const destino = esApple(request) ? APP_WEB : (await ultimaVersion()).apk;
       return new Response(null, {
         status: 302,
-        headers: { Location: apk, 'Cache-Control': 'no-store' },
+        headers: {
+          Location: destino,
+          'Cache-Control': 'no-store',
+          // La respuesta depende del aparato: ningun cache la comparte.
+          Vary: 'User-Agent',
+        },
       });
     }
 
