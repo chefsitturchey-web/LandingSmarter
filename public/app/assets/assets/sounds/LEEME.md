@@ -68,3 +68,12 @@ encima con **el mismo nombre**. No hay que tocar codigo.
 
 Los originales estan en kenney.nl/assets, en Interface Sounds, Digital Audio y
 Music Jingles.
+
+## Musica de fondo
+
+Colocar `assets/music/fondo.mp3` y, opcionalmente,
+`assets/music/halloween_fondo.mp3`. Deben ser **CC0 / dominio publico** y
+**no generados con IA**, igual que los efectos. Si falta la variante de
+Halloween se usa la normal; si faltan ambas, la app sigue sin musica.
+
+Fuente y autor de cada archivo: `assets/music/README.md`.
