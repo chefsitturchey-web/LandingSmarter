@@ -19,9 +19,9 @@ const SUPABASE_KEY = 'sb_publishable_k7Y5wWI_gNkTQfy8LsLxmw_r-RFZLfm';
 // Si Supabase no responde, se baja la ultima version conocida antes que
 // dejar a la familia con un error.
 const RESPALDO = {
-  version: '1.0.1',
-  build: 2,
-  apk: 'https://pub-3bc0ccae21bd406a96879cd03f9774ac.r2.dev/smarter-1.0.1-2.apk',
+  version: '1.0.6',
+  build: 9,
+  apk: 'https://pub-3bc0ccae21bd406a96879cd03f9774ac.r2.dev/smarter-1.0.6-9.apk',
 };
 
 const APP_WEB = '/app/';

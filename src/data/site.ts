@@ -34,7 +34,7 @@ export const academia = {
  * `version` es lo que se muestra mientras la pagina consulta la de verdad. */
 export const app = {
   apk: '/descargar',
-  version: '1.0.5',
+  version: '1.0.6',
   requisito: 'Android 7 o superior',
   // La misma app, en el navegador. En el iPhone se agrega a la pantalla de
   // inicio y queda con su icono, como una app.
