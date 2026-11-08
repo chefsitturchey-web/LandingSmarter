@@ -1,0 +1,16 @@
+---
+import Adorno from '../temporadas/Adorno.astro';
+---
+<div class="an an-hero temporada-escena" aria-hidden="true">
+  <div class="an-fuego f1">{Array.from({ length: 12 }, (_, i) => <i style={`--i:${i}`}></i>)}</div>
+  <div class="an-fuego f2">{Array.from({ length: 12 }, (_, i) => <i style={`--i:${i}`}></i>)}</div>
+  <Adorno temporada="anionuevo" nombre="party_popper" class="an-popper" />
+  <Adorno temporada="anionuevo" nombre="sparkles" class="an-destello" />
+  <div class="an-saludo">¡Feliz <span data-anio-saludo></span>!</div>
+</div>
+<script is:inline>
+  // El ano viene del mismo reloj que resolvio la temporada en el head.
+  document.querySelectorAll('[data-anio-saludo]').forEach(function (nodo) {
+    nodo.textContent = document.documentElement.dataset.anioFiesta;
+  });
+</script>

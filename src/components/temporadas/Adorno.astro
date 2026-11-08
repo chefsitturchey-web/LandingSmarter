@@ -1,0 +1,62 @@
+---
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+interface Props {
+  temporada: 'navidad' | 'anionuevo';
+  nombre: string;
+  class?: string;
+}
+const { temporada, nombre, class: clase } = Astro.props;
+// Si aun no se descargaron los emojis, usamos dibujos locales sin peticiones.
+const disponible = existsSync(resolve('public', temporada, `${nombre}.webp`));
+---
+
+{disponible ? (
+  <img class={clase} src={`/${temporada}/${nombre}.webp`} alt="" aria-hidden="true" width="256" height="256" loading="lazy" decoding="async" />
+) : (
+  <svg class={clase} viewBox="0 0 256 256" aria-hidden="true" fill="none">
+    {nombre === 'christmas_tree' && <>
+      <path d="M113 190h30v48h-30z" fill="#9B6447" />
+      <path d="M128 22 63 110h29l-48 65h34l-43 52h186l-43-52h34l-48-65h29z" fill="#207859" />
+      <path d="m128 22 65 88h-29l48 65h-34l43 52h-93z" fill="#125440" />
+      <path d="m128 10 7 14 16 3-12 11 3 16-14-8-14 8 3-16-12-11 16-3z" fill="#FFD674" />
+      <path d="m84 117 73 25m-90 32 107 29" stroke="#EBC578" stroke-width="8" stroke-linecap="round" />
+      <g fill="#F06B87"><circle cx="113" cy="95" r="8"/><circle cx="153" cy="166" r="9"/><circle cx="92" cy="203" r="8"/></g>
+      <g fill="#FFE3A1"><circle cx="143" cy="114" r="6"/><circle cx="100" cy="159" r="6"/><circle cx="180" cy="216" r="6"/></g>
+    </>}
+    {nombre === 'wrapped_gift' && <>
+      <rect x="38" y="102" width="180" height="128" rx="14" fill="#D9006F" />
+      <path d="M128 102h90v114a14 14 0 0 1-14 14h-76z" fill="#AE0059" />
+      <rect x="28" y="82" width="200" height="42" rx="10" fill="#EE468F" />
+      <path d="M113 82h30v148h-30z" fill="#FFD674" />
+      <path d="M126 82C18 90 65 3 103 44Zm4 0c108 8 61-79 23-38Z" stroke="#FFD674" stroke-width="15" stroke-linejoin="round" />
+    </>}
+    {(nombre === 'star' || nombre === 'sparkles') && <>
+      <path d="m128 19 31 64 70 10-51 49 12 70-62-33-62 33 12-70-51-49 70-10z" fill="#FFD674" />
+      <path d="m128 19 31 64 70 10-51 49 12 70-62-33z" fill="#E8AD45" />
+      <path d="m51 23 4 12 12 4-12 4-4 12-4-12-12-4 12-4zm158 164 6 17 17 6-17 6-6 17-6-17-17-6 17-6z" fill="#FFF1CC" />
+    </>}
+    {nombre === 'bell' && <>
+      <circle cx="128" cy="45" r="17" stroke="#D99A37" stroke-width="10" />
+      <circle cx="128" cy="207" r="21" fill="#B66D22" />
+      <path d="M58 172c22-15 8-58 26-87 18-29 70-29 88 0 18 29 4 72 26 87l13 23H45z" fill="#FFD674" />
+      <path d="M128 64c65 0 31 83 70 108l13 23h-83z" fill="#E8AD45" />
+      <path d="M47 195h162" stroke="#FFF1CC" stroke-width="12" stroke-linecap="round" />
+      <path d="m128 74-37-24-4 43zm0 0 37-24 4 43z" fill="#D9006F" />
+    </>}
+    {nombre === 'party_popper' && <>
+      <path d="m36 222 42-143 100 100z" fill="#FFD674" />
+      <path d="m36 222 142-43-50-50z" fill="#E8AD45" />
+      <path d="m62 137 57 57M47 183l28 28" stroke="#D9006F" stroke-width="15" />
+      <ellipse cx="128" cy="129" rx="22" ry="71" transform="rotate(-45 128 129)" fill="#F177A6" />
+      <path d="m139 89 10-45m18 64 44-10m-41 39 31 16M94 57l-8-16m109-6-13 19" stroke="#FFD674" stroke-width="9" stroke-linecap="round" />
+      <path d="m130 19 10 12m65 40 17-4m-2 103 10 15" stroke="#EE468F" stroke-width="9" stroke-linecap="round" />
+    </>}
+    {nombre === 'clinking_glasses' && <>
+      <path d="m54 37 65 18-19 69c-13 37-70 21-60-16zm148 0-65 18 19 69c13 37 70 21 60-16z" fill="#FFF1CC" fill-opacity=".8" stroke="#FFF1CC" stroke-width="6" />
+      <path d="m47 89 57 16-6 21c-11 28-52 15-47-9zm162 0-57 16 6 21c11 28 52 15 47-9z" fill="#E8AD45" />
+      <path d="m69 149-18 66m136-66 18 66M27 209l48 13m106 0 48-13M128 21V9m-13 24-10-11m36 11 10-11" stroke="#FFF1CC" stroke-width="7" stroke-linecap="round" />
+    </>}
+  </svg>
+)}

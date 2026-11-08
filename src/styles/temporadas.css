@@ -1,0 +1,65 @@
+/* Adornos comunes. Se quedan fuera de los toques y de la lectura. */
+.nv, .an, .marca-ambiente { display: none; pointer-events: none; }
+.temporada-escena { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
+.temporada-escena > img, .temporada-escena > svg { position: absolute; height: auto; }
+:root:is([data-temporada='navidad'], [data-temporada='anionuevo']) .nav-logo { position: relative; }
+:root:is([data-temporada='navidad'], [data-temporada='anionuevo']) .pie { position: relative; }
+.temporada-pie { position: absolute; inset: 0 0 auto; height: 0; z-index: 2; }
+.temporada-pie > :is(img, svg) { position: absolute; bottom: -10px; width: clamp(50px, 6vw, 86px); }
+.temporada-pie-izq { left: 4%; }
+.temporada-pie-der { right: 4%; }
+
+/* La marca tambien tiene ambiente cuando no hay ninguna fiesta. */
+:root:not([data-temporada]), :root[data-temporada='normal'] { --ambiente-rosa: #FCEAF3; }
+:root:is(:not([data-temporada]), [data-temporada='normal']) .hero {
+  background:
+    radial-gradient(ellipse at 100% 100%, #940058 0, transparent 55%),
+    radial-gradient(ellipse at 72% 12%, #FF62AA 0, transparent 48%),
+    var(--garabatos-claros), #D9006F;
+}
+:root:is(:not([data-temporada]), [data-temporada='normal']) .marca-ambiente {
+  display: block; position: absolute; inset: 0; overflow: hidden;
+}
+.marca-ambiente::before, .marca-ambiente::after {
+  content: ''; position: absolute; width: 460px; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, #FFA9D140, transparent 70%);
+}
+.marca-ambiente::before { left: -180px; bottom: -220px; }
+.marca-ambiente::after { right: -190px; top: -160px; }
+.marca-ambiente i {
+  position: absolute; width: 12px; aspect-ratio: 1; background: #FFD8EA;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: .5; animation: marca-flotar 7s ease-in-out infinite;
+}
+.marca-ambiente i:nth-child(1) { left: 5%; top: 12%; }
+.marca-ambiente i:nth-child(2) { left: 46%; top: 7%; width: 20px; animation-delay: -2s; }
+.marca-ambiente i:nth-child(3) { right: 3%; top: 48%; animation-delay: -4s; }
+.marca-ambiente i:nth-child(4) { left: 51%; bottom: 8%; width: 18px; animation-delay: -1s; }
+.marca-ambiente i:nth-child(5) { right: 19%; top: 7%; width: 8px; animation-delay: -3s; }
+:root:is(:not([data-temporada]), [data-temporada='normal']) :is(.programas, .preguntas) {
+  background: radial-gradient(ellipse at 0 10%, #FCE5F180, transparent 45%),
+    radial-gradient(ellipse at 100% 90%, #E9E3FF80, transparent 40%), var(--fondo-2);
+  box-shadow: inset 0 1px #EEE5F3, inset 0 -1px #EEE5F3;
+}
+:root:is(:not([data-temporada]), [data-temporada='normal']) :is(#como-funciona, #testimonios) {
+  background: radial-gradient(ellipse at 95% 15%, #FCEAF380, transparent 45%),
+    radial-gradient(ellipse at 0 90%, #F0ECFF80, transparent 40%), #fff;
+}
+:root:is(:not([data-temporada]), [data-temporada='normal']) .pie {
+  background: radial-gradient(ellipse at 50% 0, #61234C80, transparent 65%), var(--garabatos-claros), var(--tinta);
+}
+@media (hover: hover) and (pointer: fine) {
+  :root:is(:not([data-temporada]), [data-temporada='normal']) .voz {
+    transition: box-shadow .25s ease;
+  }
+  :root:is(:not([data-temporada]), [data-temporada='normal']) .voz:hover {
+    box-shadow: 0 12px 36px #D9006F12;
+  }
+}
+@keyframes marca-flotar { 50% { translate: 0 -12px; opacity: .8; } }
+@media (max-width: 860px) {
+  .marca-ambiente i:nth-child(4) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marca-ambiente *, .nv *, .an * { animation: none !important; }
+}

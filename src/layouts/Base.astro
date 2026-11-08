@@ -7,7 +7,12 @@
  */
 import '../styles/global.css';
 import '../styles/halloween.css';
+import '../styles/temporadas.css';
+import '../styles/navidad.css';
+import '../styles/anionuevo.css';
 import Ambiente from '../components/halloween/Ambiente.astro';
+import Nieve from '../components/navidad/Ambiente.astro';
+import Confeti from '../components/anionuevo/Ambiente.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { academia } from '../data/site';
@@ -40,21 +45,21 @@ const canonica = new URL(Astro.url.pathname, Astro.site ?? academia.url).href;
     <meta property="og:description" content={descripcion} />
     <meta property="og:url" content={canonica} />
     <script is:inline>
-      // Halloween: del 1 al 31 de octubre de 2026 la pagina se disfraza sola,
-      // y el 1 de noviembre vuelve a lo normal sin publicar nada. Va antes de
-      // pintar para que no se vea un salto de colores al cargar.
-      //
-      // Para verla fuera de fecha, o apagarla dentro: `?temporada=halloween`
-      // o `?temporada=normal` al final de la direccion.
+      // Resuelve la temporada cada ano antes de pintar, sin saltos de color.
+      // La direccion permite probar cualquiera o apagarla con temporada=normal.
       (function () {
         var pedida = new URLSearchParams(location.search).get('temporada');
         var hoy = new Date();
-        var enFecha = hoy >= new Date(2026, 9, 1) && hoy < new Date(2026, 10, 1);
-        if (pedida === 'halloween' || (pedida !== 'normal' && enFecha)) {
-          document.documentElement.dataset.temporada = 'halloween';
-          var color = document.querySelector('meta[name="theme-color"]');
-          if (color) color.content = '#1B1030';
-        }
+        var mes = hoy.getMonth();
+        var dia = hoy.getDate();
+        var colores = { normal: '#D9006F', halloween: '#1B1030', navidad: '#123D32', anionuevo: '#18162E' };
+        var temporada = Object.prototype.hasOwnProperty.call(colores, pedida) ? pedida
+          : mes === 9 ? 'halloween'
+          : mes === 11 ? (dia < 30 ? 'navidad' : 'anionuevo') : 'normal';
+        document.documentElement.dataset.temporada = temporada;
+        document.documentElement.dataset.anioFiesta = String(hoy.getFullYear() + 1);
+        var color = document.querySelector('meta[name="theme-color"]');
+        if (color) color.content = colores[temporada];
       })();
     </script>
     <script is:inline>
@@ -71,6 +76,8 @@ const canonica = new URL(Astro.url.pathname, Astro.site ?? academia.url).href;
     <main id="contenido">
       <slot />
       <Ambiente />
+      <Nieve />
+      <Confeti />
     </main>
     <Footer />
 

@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # cache local de wrangler dev
 .wrangler/
+
+# Capturas y herramientas de revision local.
+capturas-temporadas/
+.cache-temporadas/

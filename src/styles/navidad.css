@@ -1,0 +1,82 @@
+/* Navidad, del 1 al 29 de diciembre. El rosa sigue siendo el de la marca. */
+:root[data-temporada='navidad'] {
+  --resalte: #F4D18B;
+  --banda: #123D32;
+  --acento-suave: #FCE8F0;
+}
+:root[data-temporada='navidad'] .nv { display: block; }
+:root[data-temporada='navidad'] .hero {
+  padding-bottom: clamp(114px, 12vw, 172px);
+  background:
+    radial-gradient(ellipse at 85% 40%, #34735C 0, transparent 58%),
+    radial-gradient(ellipse at 10% 100%, #7F584740 0, transparent 55%), #123D32;
+}
+:root[data-temporada='navidad'] .hero-disco {
+  background: radial-gradient(circle at 30% 25%, #FFE9B1, #DBAE62);
+  box-shadow: 0 0 0 20px #F4D18B0D, 0 0 80px #F4D18B26;
+}
+:root[data-temporada='navidad'] .hero .forma { color: #F4D18B70; }
+:root[data-temporada='navidad'] .hero h1 em { color: #FFE1AA; }
+:root[data-temporada='navidad'] .hero .trazo path { stroke: #F58EB5; }
+:root[data-temporada='navidad'] :is(.programas, .preguntas) {
+  background: radial-gradient(ellipse at 100% 0, #F3DFC04D, transparent 55%), #FAF8F1;
+}
+:root[data-temporada='navidad'] #como-funciona {
+  background: radial-gradient(ellipse at 0 100%, #DCECE459, transparent 50%), #fff;
+}
+:root[data-temporada='navidad'] .pie {
+  background: radial-gradient(ellipse at 50% 0, #30634C, transparent 70%), #102E28;
+}
+:root[data-temporada='navidad'] .estrella { background: var(--garabatos-claros), #173F35; }
+.nv-gorro {
+  position: absolute; width: 36px; left: -5px; top: -6px; rotate: -14deg;
+  filter: drop-shadow(0 2px 2px #123D3226);
+}
+.nv-guirnalda {
+  position: absolute; inset: auto 0 -9px; height: 12px;
+  border-top: 3px solid #285443; background: linear-gradient(#123D3214, transparent);
+}
+.nv-guirnalda i {
+  position: absolute; left: calc((var(--i) + .5) * 100% / 24); top: -1px;
+  width: 6px; height: 9px; border-radius: 2px 2px 50% 50%;
+  background: #F4D18B; box-shadow: 0 2px 9px #F4D18B80;
+}
+.nv-guirnalda i:nth-child(3n) { background: #F797AF; box-shadow: 0 2px 9px #F797AF80; }
+.nv-guirnalda i:nth-child(3n + 1) { background: #A9D6BA; box-shadow: 0 2px 9px #A9D6BA80; }
+.nv-luces {
+  position: absolute; inset: 0; opacity: .6;
+  background-image: radial-gradient(2px 2px at 10% 15%, #FFE9B1 80%, transparent),
+    radial-gradient(1px 1px at 65% 30%, #fff 80%, transparent),
+    radial-gradient(2px 2px at 90% 75%, #FFE9B1 80%, transparent);
+  background-size: 340px 280px;
+}
+.nv-suelo {
+  position: absolute; inset: auto -5% -25px; height: 68px; border-radius: 50% 50% 0 0;
+  background: #FAF8F1; box-shadow: 0 -12px 0 #FAF8F11A;
+}
+.nv-hero .nv-arbol { right: 4%; bottom: 24px; width: clamp(90px, 12vw, 170px); }
+.nv-hero .nv-regalo { right: 15%; bottom: 19px; width: clamp(58px, 7vw, 98px); rotate: -8deg; }
+.nv-hero .nv-estrella { left: 4%; bottom: 32px; width: clamp(35px, 4vw, 54px); rotate: -15deg; }
+.nv-hero .nv-campana { right: 2%; top: 26px; width: 46px; rotate: 15deg; }
+.nv-nieve {
+  position: fixed; inset: 0; z-index: 30; overflow: hidden;
+}
+.nv-nieve i {
+  position: absolute; top: -15px; left: calc(1% + var(--i) * 10.6%);
+  width: 4px; height: 4px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 3px #123D3220; opacity: .5;
+  animation: nv-nevar calc(18s + var(--i) * 1.4s) linear infinite;
+  animation-delay: calc(var(--i) * -3.7s);
+}
+@keyframes nv-nevar { to { translate: 12px calc(100vh + 30px); } }
+@media (max-width: 860px) {
+  :root[data-temporada='navidad'] .hero { padding-bottom: 112px; }
+  .nv-hero .nv-arbol { right: 3%; width: 88px; bottom: 18px; }
+  .nv-hero .nv-regalo { right: 24%; width: 58px; bottom: 20px; }
+  .nv-hero .nv-estrella { left: 5%; bottom: 29px; width: 32px; }
+  .nv-hero .nv-campana { width: 30px; right: 3%; top: 18px; }
+  .nv-nieve i:nth-child(2n) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-temporada='navidad'] .nv-nieve { display: none; }
+}

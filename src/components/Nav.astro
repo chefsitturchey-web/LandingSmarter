@@ -3,6 +3,9 @@ import { Image } from 'astro:assets';
 import { img } from '../lib/img';
 import Hw from './halloween/Hw.astro';
 import Sombrero from './halloween/Sombrero.astro';
+import GorroNavidad from './navidad/Sombrero.astro';
+import GorroFiesta from './anionuevo/Sombrero.astro';
+import Guirnalda from './navidad/Guirnalda.astro';
 
 const enlaces = [
   { href: '/#programas', texto: 'Programas' },
@@ -18,6 +21,8 @@ const enlaces = [
     <a href="/" class="nav-logo" aria-label="Academia SMARTER, inicio">
       <Image src={img('logo')} alt="" width={280} loading="eager" />
       <Sombrero class="hw-sombrero" />
+      <GorroNavidad />
+      <GorroFiesta />
     </a>
 
     <nav class="nav-enlaces" aria-label="Secciones">
@@ -42,6 +47,7 @@ const enlaces = [
     <span class="hw-arana a2"><Hw nombre="spider" /></span>
     <span class="hw-arana a3"><Hw nombre="spider" /></span>
   </div>
+  <Guirnalda />
 </header>
 
 <script>

@@ -4,6 +4,8 @@ import { img } from '../lib/img';
 import { cifras } from '../data/site';
 import Forma from './Forma.astro';
 import HeroNoche from './halloween/HeroNoche.astro';
+import HeroNavidad from './navidad/HeroNavidad.astro';
+import HeroFiesta from './anionuevo/HeroFiesta.astro';
 
 // El titular entra palabra por palabra. "brillantes" va subrayada a mano.
 const titular = ['Creando', 'mentes', 'brillantes,', 'hoy', 'y', 'siempre.'];
@@ -11,6 +13,9 @@ const titular = ['Creando', 'mentes', 'brillantes,', 'hoy', 'y', 'siempre.'];
 
 <section class="hero">
   <HeroNoche />
+  <HeroNavidad />
+  <HeroFiesta />
+  <div class="marca-ambiente" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 
   <div class="contenedor hero-grid">
     <div class="hero-texto">
